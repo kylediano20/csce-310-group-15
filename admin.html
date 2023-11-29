@@ -17,91 +17,42 @@
         <div>
             <h3>Add New Administrator</h3>
             <form id="addAdminForm">
-                <label for="uin">UIN:</label>
-                <input type="number" id="uin" name="uin" required>
-                
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" required>
-                
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" required>
-                
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                
-                <label for="userType">User Type:</label>
-                <input type="text" id="userType" name="userType" value="admin" readonly>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                
-                <label for="discordName">Discord Name:</label>
-                <input type="text" id="discordName" name="discordName" required>
-                
+                <input type="number" name="uin" placeholder="UIN" required>
+                <input type="text" name="firstName" placeholder="First Name" required>
+                <input type="text" name="lastName" placeholder="Last Name" required>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="discordName" placeholder="Discord Name" required>
                 <button type="submit">Add Administrator</button>
             </form>
+            
+            
         </div>
         <!-- Update Admin -->
         <div>
-            <h3>Modify Roles or Details</h3>
-            <!-- Form for modifying roles or details -->
-            <form id="updateUserForm">
-                <input type="number" id="updateUin" name="uin" placeholder="UIN" required>
-                
-                <input type="text" id="updateFirstName" name="firstName" placeholder="First Name">
-                <input type="text" id="updateMInitial" name="mInitial" placeholder="Middle Initial">
-                <input type="text" id="updateLastName" name="lastName" placeholder="Last Name">
-                <input type="text" id="updateUsername" name="username" placeholder="Username">
-                <input type="password" id="updatePassword" name="password" placeholder="Password">
-                <input type="text" id="updateUserType" name="userType" placeholder="User Type">
-                <input type="email" id="updateEmail" name="email" placeholder="Email">
-                <input type="text" id="updateDiscordName" name="discordName" placeholder="Discord Name">
-                
-                <input type="text" id="updateGender" name="gender" placeholder="Gender">
-                <select id="updateHispanicLatino" name="hispanicLatino">
-                    <option value="">Hispanic/Latino?</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <input type="text" id="updateRace" name="race" placeholder="Race">
-                <select id="updateUSCitizen" name="usCitizen">
-                    <option value="">U.S. Citizen?</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <select id="updateFirstGeneration" name="firstGeneration">
-                    <option value="">First Generation?</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <label for="updateDoB">DOB:</label>
-                <input type="date" id="updateDoB" name="dob" placeholder="Date of Birth (YYYY-MM-DD)">
-                <input type="number" id="updateGPA" name="gpa" placeholder="GPA" step="0.01">
-                <input type="text" id="updateMajor" name="major" placeholder="Major">
-                <input type="text" id="updateMinor1" name="minor1" placeholder="Minor 1">
-                <input type="text" id="updateMinor2" name="minor2" placeholder="Minor 2">
-                <input type="text" id="updateExpectedGraduation" name="expectedGraduation" placeholder="Expected Graduation">
-                <input type="text" id="updateSchool" name="school" placeholder="School">
-                <input type="text" id="updateClassification" name="classification" placeholder="Current Classification">
-                <input type="number" id="updatePhone" name="phone" placeholder="Phone Number">
-                <input type="text" id="updateStudentType" name="studentType" placeholder="Student Type">
-                
-                <button type="submit">Update Details</button>
+            <h3>Modify User Roles or Details</h3>
+            <form id="fetchUserDetailsForm">
+                <input type="number" id="fetchUin" name="uin" placeholder="UIN" required>
+                <button type="submit">Fetch User Details</button>
             </form>
+            
+            <div id="userDetailsPlaceholder" style="display: none;">
+                <!-- Placeholder to display the user type -->
+            </div>
+            
+            
         </div>
         <!-- Select Admin -->
         <div>
             <h3>User Types and Roles</h3>
+            <button onclick="fetchUserTypesAndRoles()">Refresh User Types and Roles</button>
             <table id="usersTable">
                 <tr>
                     <th>UIN</th>
                     <th>User Type</th>
                     <th>Student Type</th>
                 </tr>
-                <!-- Add as many rows as needed -->
             </table>
         </div>
         <!-- Delete Admin -->
@@ -109,10 +60,9 @@
             <h3>Manage User Account</h3>
     <form id="manageUserForm">
         <label for="manageUin">Enter UIN of User:</label>
-        <input type="number" id="manageUin" name="uin" required>
-        
-        <button type="button" id="deactivateUserBtn">Deactivate Account</button>
-        <button type="button" id="deleteUserBtn">Delete Account</button>
+        <input type="text" id="manageUin" placeholder="Enter UIN">
+        <button onclick="deactivateUser()">Deactivate User</button>
+        <button onclick="confirmDelete()">Delete User</button>
     </form>
         </div>
     </div>
@@ -123,78 +73,22 @@
     <script>
         document.getElementById('addAdminForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            
-            var uin = document.getElementById('uin').value;
-            var firstName = document.getElementById('firstName').value;
-            var lastName = document.getElementById('lastName').value;
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            var userType = document.getElementById('userType').value;
-            var email = document.getElementById('email').value;
-            var discordName = document.getElementById('discordName').value;
-            
-            console.log('Submitting new admin data:', {
-                uin: uin,
-                firstName: firstName,
-                lastName: lastName,
-                username: username,
-                password: password,
-                userType: userType,
-                email: email,
-                discordName: discordName
+    
+            var formData = new FormData(this);
+    
+            fetch('add_admin.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Show the response from add_admin.php
+                document.getElementById('addAdminForm').reset(); // Clear the form
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while creating the administrator account.');
             });
-            
-            // After submitting, clear the form
-            document.getElementById('addAdminForm').reset();
-            alert('New Admin created');
-        });
-    </script>
-       <script>
-        document.getElementById('updateUserForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            // Function to collect form data
-            function getFormData(id) {
-                var element = document.getElementById(id);
-                return element.value;
-            }
-
-
-
-            // Collect all form data
-            var formData = {
-                uin: getFormData('updateUin'),
-                firstName: getFormData('updateFirstName'),
-                mInitial: getFormData('updateMInitial'),
-                lastName: getFormData('updateLastName'),
-                username: getFormData('updateUsername'),
-                password: getFormData('updatePassword'),
-                userType: getFormData('updateUserType'),
-                email: getFormData('updateEmail'),
-                discordName: getFormData('updateDiscordName'),
-                gender: getFormData('updateGender'),
-                hispanicLatino: getFormData('updateHispanicLatino'),
-                race: getFormData('updateRace'),
-                usCitizen: getFormData('updateUSCitizen'),
-                firstGeneration: getFormData('updateFirstGeneration'),
-                dob: getFormData('updateDoB'),
-                gpa: getFormData('updateGPA'),
-                major: getFormData('updateMajor'),
-                minor1: getFormData('updateMinor1'),
-                minor2: getFormData('updateMinor2'),
-                expectedGraduation: getFormData('updateExpectedGraduation'),
-                school: getFormData('updateSchool'),
-                classification: getFormData('updateClassification'),
-                phone: getFormData('updatePhone'),
-                studentType: getFormData('updateStudentType')
-            };
-
-            // Log the form data to the console
-            console.log('Updating user data:', formData);
-            console.log('User details updated successfully');
-            
-            document.getElementById('updateUserForm').reset();
-            alert('User details updated successfully');
         });
     </script>
         <script>
@@ -226,28 +120,215 @@
             });
         </script>
         <script>
-            document.getElementById('deactivateUserBtn').addEventListener('click', function() {
-                var uinToManage = document.getElementById('manageUin').value;
-                // Simulate account deactivation
-                console.log('Account with UIN ' + uinToManage + ' deactivated (simulation)');
+            document.getElementById('fetchUserDetailsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var uin = document.getElementById('fetchUin').value;
 
-                // Here we'd make an API call to deactivate the account
-        
-                alert('Account with UIN ' + uinToManage + ' has been deactivated.');
-            });
-        
-            document.getElementById('deleteUserBtn').addEventListener('click', function() {
-                var uinToManage = document.getElementById('manageUin').value;
-                // Consider adding a confirmation dialog before proceeding
-                if (confirm('Are you sure you want to permanently delete the account with UIN ' + uinToManage + '?')) {
-                    // Simulate account deletion
-                    console.log('Account with UIN ' + uinToManage + ' deleted (simulation)');
+            fetch('get_user_details.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'uin=' + uin
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the user type in the placeholder
+                var userDetailsPlaceholder = document.getElementById('userDetailsPlaceholder');
+                userDetailsPlaceholder.innerHTML = '<p>User Type: ' + data.user_type + '</p>';
+                userDetailsPlaceholder.style.display = 'block';
 
-                    // Here we'd make an API call to delete the account
-        
-                    alert('Account with UIN ' + uinToManage + ' has been deleted.');
+                console.log(data);
+
+                if (data.User_Type != 'college_student') {
+                    displayUpdateFieldsForUser(data);
+                } else {
+                    displayUpdateFieldsForStudent(data);
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching user details.');
+            });
+        });
+
+        function attachFormListeners() {
+            // Attach event listener to updateUserForm (if it exists)
+            var updateUserForm = document.getElementById('updateUserForm');
+            if (updateUserForm) {
+                updateUserForm.addEventListener('submit', function(event) {
+                    handleFormSubmit(event, 'update_user.php'); // PHP script for general users
+                });
+            }
+
+            // Attach event listener to updateCollegeStudentForm (if it exists)
+            var updateCollegeStudentForm = document.getElementById('updateCollegeStudentForm');
+            if (updateCollegeStudentForm) {
+                updateCollegeStudentForm.addEventListener('submit', function(event) {
+                    handleFormSubmit(event, 'update_college_student.php'); // PHP script for college students
+                });
+            }
+        }
+
+        function handleFormSubmit(event, scriptUrl) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+
+            // Log form data for debugging
+            console.log("Form Data Submitted:");
+            for (var pair of formData.entries()) {
+                console.log(pair[0]+ ': ' + pair[1]); 
+            }
+
+            fetch(scriptUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Update successful');
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating.');
+            });
+        }
+
+
+            function displayUpdateFieldsForUser(user) {
+                var formHtml = `
+                    <h3>Update User Details</h3>
+                    <form id="updateUserForm">
+                        <input type="hidden" name="uin" value="${user.UIN}">
+                        <input type="text" name="First_Name" placeholder="First Name" value="${user.First_Name || ''}">
+                        <input type="text" name="M_Initial" placeholder="Middle Initial" value="${user.M_Initial || ''}">
+                        <input type="text" name="Last_Name" placeholder="Last Name" value="${user.Last_Name || ''}">
+                        <input type="text" name="Username" placeholder="Username" value="${user.Username || ''}">
+                        <input type="password" name="Passwords" placeholder="New Password">
+                        <input type="text" name="User_Type" placeholder="User Type" value="${user.User_Type || ''}">
+                        <input type="email" name="Email" placeholder="Email" value="${user.Email || ''}">
+                        <input type="text" name="Discord_Name" placeholder="Discord Name" value="${user.Discord_Name || ''}">
+                        <button type="submit">Update User</button>
+                    </form>
+                `;
+
+                document.getElementById('userDetailsPlaceholder').innerHTML = formHtml;
+                document.getElementById('userDetailsPlaceholder').style.display = 'block';
+                // Attach event listeners to forms
+                attachFormListeners();
+            }
+
+            function displayUpdateFieldsForStudent(user) {
+                var formHtml2 = `
+                    <h3>Update Student Details</h3>
+                    <form id="updateCollegeStudentForm">
+                        <input type="hidden" name="uin" value="${user.UIN}">
+                        <input type="text" name="First_Name" placeholder="First Name" value="${user.First_Name || ''}">
+                        <input type="text" name="M_Initial" placeholder="Middle Initial" value="${user.M_Initial || ''}">
+                        <input type="text" name="Last_Name" placeholder="Last Name" value="${user.Last_Name || ''}">
+                        <input type="text" name="Username" placeholder="Username" value="${user.Username || ''}">
+                        <input type="password" name="Passwords" placeholder="New Password">
+                        <input type="text" name="User_Type" placeholder="User Type" value="${user.User_Type || ''}">
+                        <input type="email" name="Email" placeholder="Email" value="${user.Email || ''}">
+                        <input type="text" name="Discord_Name" placeholder="Discord Name" value="${user.Discord_Name || ''}">
+                        <input type="text" name="Gender" id="gender" placeholder="Gender" value="${user.Gender || ''}">
+                        <input type="text" name="Hispanic_Latino" id="hispanicLatino" placeholder="Hispanic/Latino (0 or 1)" value="${user.Hispanic_Latino || ''}">
+                        <input type="text" name="Race" id="race" placeholder="Race" value="${user.Race || ''}">
+                        <input type="text" name="US_Citizen" id="usCitizen" placeholder="US Citizen (0 or 1)" value="${user.US_Citizen || ''}">
+                        <input type="text" name="First_Generation" id="firstGeneration" placeholder="First Generation (0 or 1)" value="${user.First_Generation || ''}">
+                        <input type="text" name="DoB" id="dob" placeholder="DOB (YYYY-MM-DD)" value="${user.DoB || ''}">
+                        <input type="text" name="GPA" id="gpa" placeholder="GPA" value="${user.GPA || ''}">
+                        <input type="text" name="Major" id="major" placeholder="Major" value="${user.Major || ''}">
+                        <input type="text" name="Minor_1" id="minor1" placeholder="Minor 1" value="${user.Minor_1 || ''}">
+                        <input type="text" name="Minor_2" id="minor2" placeholder="Minor 2" value="${user.Minor_2 || ''}">
+                        <input type="text" name="Expected_Graduation" id="expectedGraduation" placeholder="Expected Grad Year" value="${user.Expected_Graduation || ''}">
+                        <input type="text" name="School" id="school" placeholder="School" value="${user.School || ''}">
+                        <input type="text" name="Current_Classification" id="currentClassification" placeholder="Current Classification" value="${user.Current_Classification || ''}">
+                        <input type="text" name="Phone" id="phone" placeholder="Phone" value="${user.Phone || ''}">
+                        <input type="text" name="Student_Type" id="studentType" placeholder="Student Type" value="${user.Student_Type || ''}">
+                        <button type="submit">Update Student</button>
+                    </form>
+                `;
+
+                document.getElementById('userDetailsPlaceholder').innerHTML = formHtml2;
+                document.getElementById('userDetailsPlaceholder').style.display = 'block';
+                // Attach event listeners to forms
+                attachFormListeners();
+            }
+
+        </script>
+        
+        <script>
+            function fetchUserTypesAndRoles() {
+                fetch('get_user_types_and_roles.php')
+                .then(response => response.json())
+                .then(data => {
+                    // Call function to update the table with this data
+                    updateUsersTable(data);
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        
+            // Call the function on page load or based on some other event
+            fetchUserTypesAndRoles();
+
+            // Function to update the table with user types and roles
+            function updateUsersTable(data) {
+                var table = document.getElementById('usersTable');
+
+                // Clear existing rows (except the header)
+                for (var i = table.rows.length - 1; i > 0; i--) {
+                    table.deleteRow(i);
+                }
+
+                // Add new rows from fetched data
+                data.forEach(function(user) {
+                    var row = table.insertRow();
+                    row.insertCell(0).textContent = user.UIN;
+                    row.insertCell(1).textContent = user.User_Type;
+                    row.insertCell(2).textContent = user.Student_Type || 'N/A'; // Display 'N/A' if Student_Type is not provided
+                });
+            }
+
+            // Call the function to fetch user types and roles when the page loads
+            document.addEventListener('DOMContentLoaded', function() {
+                fetchUserTypesAndRoles();
             });
         </script>
+        
+        <script>
+            function deactivateUser() {
+            var uin = document.getElementById('manageUin').value;
+
+            fetch('deactivate_user.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'uin=' + uin
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function confirmDelete() {
+            var uin = document.getElementById('manageUin').value;
+            if (confirm("Are you sure you want to delete the user with UIN: " + uin + "?")) {
+                deleteUser(uin);
+            }
+        }
+
+        function deleteUser(uin) {
+            fetch('delete_user.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'uin=' + uin
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        </script>
+        
+        
 </body>
 </html>
