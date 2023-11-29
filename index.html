@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Main</title>
+        <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+    </head>
+<body>
+    <header>
+        <h1>Cybersecurity Center Student Tracking and Reporting Tool </h1>
+    </header>
+    <nav id="dashboardPage" style="display: none;">
+        <a href="#" onclick="showSection('admin')">Admin Dashboard</a>
+        <a href="#" onclick="showSection('student')">Student Dashboard</a>
+    </nav>
+
+    <div class="container">
+            <!-- Login Page -->
+    <div id="loginPage">
+        <h2>Login</h2>
+        <form action="login.php" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        
+        <h3>Create New Student Account</h3>
+        <form id="createStudentForm">
+            <input type="number" name="uin" placeholder="UIN" required>
+            <input type="text" name="firstName" placeholder="First Name" required>
+            <input type="text" name="lastName" placeholder="Last Name" required>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <button type="submit">Create Student Account</button>
+        </form>        
+    </div>
+    <script>
+        document.getElementById('createStudentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+    
+            var formData = new FormData(this);
+    
+            fetch('create_student.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('createStudentForm').reset();
+                alert(data); // Show the response from create_student.php
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('createStudentForm').reset();
+                alert('An error occurred while creating the account.');
+            });
+        });
+    </script>
+    
+</body>
+</html>

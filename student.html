@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Dashboard</title>
+        <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+    </head>
+<body>
+    <header>
+        <h1>Cybersecurity Center Student Tracking and Reporting Tool </h1>
+    </header>
+    <h1>Student Dashboard</h1>
+    <div id="student" class="student-functions functionality">
+        <h2>Student Functionalities</h2>
+        <!-- Update Student -->
+        <div>
+            <h3>Update Your Information</h3>
+            <form id="updateStudentForm">
+                <!-- Assuming the student knows their UIN -->
+                <input type="number" id="studentUpdateUin" name="uin" placeholder="Your UIN" required>
+    
+                <!-- Fields for Users table -->
+                <input type="text" id="studentUpdateFirstName" name="firstName" placeholder="First Name">
+                <input type="text" id="studentUpdateMInitial" name="mInitial" placeholder="Middle Initial">
+                <input type="text" id="studentUpdateLastName" name="lastName" placeholder="Last Name">
+                <input type="text" id="studentUpdateUsername" name="username" placeholder="Username">
+                <input type="password" id="studentUpdatePassword" name="password" placeholder="Password">
+                <input type="email" id="studentUpdateEmail" name="email" placeholder="Email">
+                <input type="text" id="studentUpdateDiscordName" name="discordName" placeholder="Discord Name">
+    
+                <!-- Fields for College_Student table -->
+                <input type="text" id="studentUpdateGender" name="gender" placeholder="Gender">
+                <!-- Replace checkboxes with dropdowns or radio buttons for better UX -->
+                <select id="studentUpdateHispanicLatino" name="hispanicLatino">
+                    <option value="">Hispanic/Latino?</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+                <input type="text" id="studentUpdateRace" name="race" placeholder="Race">
+                <select id="studentUpdateUSCitizen" name="usCitizen">
+                    <option value="">U.S. Citizen?</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+                <select id="studentUpdateFirstGeneration" name="firstGeneration">
+                    <option value="">First Generation?</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+                <label for="studentUpdateDoB">DOB:</label>
+                <input type="date" id="studentUpdateDoB" name="dob" placeholder="Date of Birth (YYYY-MM-DD)">
+                <input type="number" id="studentUpdateGPA" name="gpa" placeholder="GPA" step="0.01">
+                <input type="text" id="studentUpdateMajor" name="major" placeholder="Major">
+                <input type="text" id="studentUpdateMinor1" name="minor1" placeholder="Minor 1">
+                <input type="text" id="studentUpdateMinor2" name="minor2" placeholder="Minor 2">
+                <input type="text" id="studentUpdateExpectedGraduation" name="expectedGraduation" placeholder="Expected Graduation">
+                <input type="text" id="studentUpdateSchool" name="school" placeholder="School">
+                <input type="text" id="studentUpdateClassification" name="classification" placeholder="Current Classification">
+                <input type="number" id="studentUpdatePhone" name="phone" placeholder="Phone Number">
+                <input type="text" id="studentUpdateStudentType" name="studentType" placeholder="Student Type">
+                
+                <button type="submit">Update Information</button>
+            </form>
+        </div>
+        <!-- Select Student -->
+        <div>
+            <h3>Access Profile Information</h3>
+            <!-- Functionality to access profile information -->
+            <div id="studentProfile">
+                <!-- Placeholders for Users table fields -->
+                <p><strong>UIN:</strong> <span id="profileUin"></span></p>
+                <p><strong>First Name:</strong> <span id="profileFirstName"></span></p>
+                <p><strong>Middle Initial:</strong> <span id="profileMInitial"></span></p>
+                <p><strong>Last Name:</strong> <span id="profileLastName"></span></p>
+                <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+                <p><strong>User Type:</strong> <span id="profileUserType"></span></p>
+                <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+                <p><strong>Discord Name:</strong> <span id="profileDiscordName"></span></p>
+    
+                <!-- Placeholders for College_Student table fields -->
+                <p><strong>Gender:</strong> <span id="profileGender"></span></p>
+                <p><strong>Hispanic/Latino:</strong> <span id="profileHispanicLatino"></span></p>
+                <p><strong>Race:</strong> <span id="profileRace"></span></p>
+                <p><strong>U.S. Citizen:</strong> <span id="profileUSCitizen"></span></p>
+                <p><strong>First Generation:</strong> <span id="profileFirstGeneration"></span></p>
+                <p><strong>Date of Birth:</strong> <span id="profileDoB"></span></p>
+                <p><strong>GPA:</strong> <span id="profileGPA"></span></p>
+                <p><strong>Major:</strong> <span id="profileMajor"></span></p>
+                <p><strong>Minor 1:</strong> <span id="profileMinor1"></span></p>
+                <p><strong>Minor 2:</strong> <span id="profileMinor2"></span></p>
+                <p><strong>Expected Graduation:</strong> <span id="profileExpectedGraduation"></span></p>
+                <p><strong>School:</strong> <span id="profileSchool"></span></p>
+                <p><strong>Current Classification:</strong> <span id="profileClassification"></span></p>
+                <p><strong>Phone:</strong> <span id="profilePhone"></span></p>
+                <p><strong>Student Type:</strong> <span id="profileStudentType"></span></p>
+            </div>
+        </div>
+        <!-- Delete Student -->
+        <div>
+            <!-- Functionality to deactivate an account -->
+            <div>
+                <h3>Account Settings</h3>
+                <button type="button" id="deactivateAccountBtn">Deactivate Account</button>
+                <button type="button" id="deleteAccountBtn">Delete Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Add a logout button or link -->
+    <a href="logout.php">Log Out</a>
+    <script>
+        document.getElementById('updateStudentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Function to collect form data
+            function getFormData(id) {
+                var element = document.getElementById(id);
+                return element.value;
+            }
+    
+            // Collect all form data
+            var studentData = {
+                uin: getFormData('studentUpdateUin'),
+                firstName: getFormData('studentUpdateFirstName'),
+                mInitial: getFormData('studentUpdateMInitial'),
+                lastName: getFormData('studentUpdateLastName'),
+                username: getFormData('studentUpdateUsername'),
+                password: getFormData('studentUpdatePassword'),
+                email: getFormData('studentUpdateEmail'),
+                discordName: getFormData('studentUpdateDiscordName'),
+                gender: getFormData('studentUpdateGender'),
+                hispanicLatino: getFormData('studentUpdateHispanicLatino'),
+                race: getFormData('studentUpdateRace'),
+                usCitizen: getFormData('studentUpdateUSCitizen'),
+                firstGeneration: getFormData('studentUpdateFirstGeneration'),
+                dob: getFormData('studentUpdateDoB'),
+                gpa: getFormData('studentUpdateGPA'),
+                major: getFormData('studentUpdateMajor'),
+                minor1: getFormData('studentUpdateMinor1'),
+                minor2: getFormData('studentUpdateMinor2'),
+                expectedGraduation: getFormData('studentUpdateExpectedGraduation'),
+                school: getFormData('studentUpdateSchool'),
+                classification: getFormData('studentUpdateClassification'),
+                phone: getFormData('studentUpdatePhone'),
+                studentType: getFormData('studentUpdateStudentType')
+            };
+    
+            // Log the student data to the console
+            console.log('Updating student information:', studentData);
+    
+            // Here we'd would send this data to the server
+
+            document.getElementById('updateStudentForm').reset();
+            alert('Information updated successfully');
+        });
+    </script>
+    <script>
+        function fetchStudentProfile() {
+            // Simulate fetching data from an API
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        uin: '930005170',
+                        firstName: 'John',
+                        mInitial: 'A',
+                        lastName: 'Doe',
+                        username: 'johndoe',
+                        userType: 'college_student',
+                        email: 'johndoe@example.com',
+                        discordName: 'JohnD#1234',
+                        gender: 'Male',
+                        hispanicLatino: 'No',
+                        race: 'Caucasian',
+                        usCitizen: 'Yes',
+                        firstGeneration: 'No',
+                        dob: '1995-01-01',
+                        gpa: '3.8',
+                        major: 'Computer Science',
+                        minor1: 'Mathematics',
+                        minor2: 'Physics',
+                        expectedGraduation: '2023',
+                        school: 'Engineering',
+                        classification: 'Senior',
+                        phone: '1234567890',
+                        studentType: 'Full-time'
+                    });
+                }, 1000); // Simulate network delay
+            });
+        }
+    
+        function populateProfile(data) {
+            document.getElementById('profileUin').textContent = data.uin;
+            document.getElementById('profileFirstName').textContent = data.firstName;
+            document.getElementById('profileMInitial').textContent = data.mInitial;
+            document.getElementById('profileLastName').textContent = data.lastName;
+            document.getElementById('profileUsername').textContent = data.username;
+            document.getElementById('profileUserType').textContent = data.userType;
+            document.getElementById('profileEmail').textContent = data.email;
+            document.getElementById('profileDiscordName').textContent = data.discordName;
+            document.getElementById('profileGender').textContent = data.gender;
+            document.getElementById('profileHispanicLatino').textContent = data.hispanicLatino;
+            document.getElementById('profileRace').textContent = data.race;
+            document.getElementById('profileUSCitizen').textContent = data.usCitizen;
+            document.getElementById('profileFirstGeneration').textContent = data.firstGeneration;
+            document.getElementById('profileDoB').textContent = data.dob;
+            document.getElementById('profileGPA').textContent = data.gpa;
+            document.getElementById('profileMajor').textContent = data.major;
+            document.getElementById('profileMinor1').textContent = data.minor1;
+            document.getElementById('profileMinor2').textContent = data.minor2;
+            document.getElementById('profileExpectedGraduation').textContent = data.expectedGraduation;
+            document.getElementById('profileSchool').textContent = data.school;
+            document.getElementById('profileClassification').textContent = data.classification;
+            document.getElementById('profilePhone').textContent = data.phone;
+            document.getElementById('profileStudentType').textContent = data.studentType;
+        }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchStudentProfile()
+                .then(data => populateProfile(data))
+                .catch(error => console.error('Error fetching profile data:', error));
+        });
+    </script>
+    <script>
+        document.getElementById('deactivateAccountBtn').addEventListener('click', function() {
+            // Simulate account deactivation
+            console.log('Account deactivated (simulation)');
+            // Here we'd make an API call to deactivate the account
+    
+            alert('Your account has been deactivated.');
+        });
+    
+        document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+            // Simulate account deletion
+            // Here we'd make an API call to delete the account
+    
+            if (confirm('Are you sure you want to permanently delete your account?')) {
+                // Proceed with deletion
+                console.log('Account deleted (simulation)');
+                alert('Your account has been deleted.');
+            }
+        });
+    </script>
+    
+</body>
+</html>
