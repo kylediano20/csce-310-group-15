@@ -16,52 +16,9 @@
         <!-- Update Student -->
         <div>
             <h3>Update Your Information</h3>
-            <form id="updateStudentForm">
-                <!-- Assuming the student knows their UIN -->
-                <input type="number" id="studentUpdateUin" name="uin" placeholder="Your UIN" required>
-    
-                <!-- Fields for Users table -->
-                <input type="text" id="studentUpdateFirstName" name="firstName" placeholder="First Name">
-                <input type="text" id="studentUpdateMInitial" name="mInitial" placeholder="Middle Initial">
-                <input type="text" id="studentUpdateLastName" name="lastName" placeholder="Last Name">
-                <input type="text" id="studentUpdateUsername" name="username" placeholder="Username">
-                <input type="password" id="studentUpdatePassword" name="password" placeholder="Password">
-                <input type="email" id="studentUpdateEmail" name="email" placeholder="Email">
-                <input type="text" id="studentUpdateDiscordName" name="discordName" placeholder="Discord Name">
-    
-                <!-- Fields for College_Student table -->
-                <input type="text" id="studentUpdateGender" name="gender" placeholder="Gender">
-                <!-- Replace checkboxes with dropdowns or radio buttons for better UX -->
-                <select id="studentUpdateHispanicLatino" name="hispanicLatino">
-                    <option value="">Hispanic/Latino?</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <input type="text" id="studentUpdateRace" name="race" placeholder="Race">
-                <select id="studentUpdateUSCitizen" name="usCitizen">
-                    <option value="">U.S. Citizen?</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <select id="studentUpdateFirstGeneration" name="firstGeneration">
-                    <option value="">First Generation?</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <label for="studentUpdateDoB">DOB:</label>
-                <input type="date" id="studentUpdateDoB" name="dob" placeholder="Date of Birth (YYYY-MM-DD)">
-                <input type="number" id="studentUpdateGPA" name="gpa" placeholder="GPA" step="0.01">
-                <input type="text" id="studentUpdateMajor" name="major" placeholder="Major">
-                <input type="text" id="studentUpdateMinor1" name="minor1" placeholder="Minor 1">
-                <input type="text" id="studentUpdateMinor2" name="minor2" placeholder="Minor 2">
-                <input type="text" id="studentUpdateExpectedGraduation" name="expectedGraduation" placeholder="Expected Graduation">
-                <input type="text" id="studentUpdateSchool" name="school" placeholder="School">
-                <input type="text" id="studentUpdateClassification" name="classification" placeholder="Current Classification">
-                <input type="number" id="studentUpdatePhone" name="phone" placeholder="Phone Number">
-                <input type="text" id="studentUpdateStudentType" name="studentType" placeholder="Student Type">
-                
-                <button type="submit">Update Information</button>
-            </form>
+            <div id="userDetailsPlaceholder" style="display: none;">
+                <!-- The dynamically created form will be inserted here -->
+            </div>
         </div>
         <!-- Select Student -->
         <div>
@@ -111,136 +68,203 @@
     <!-- Add a logout button or link -->
     <a href="logout.php">Log Out</a>
     <script>
-        document.getElementById('updateStudentForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            // Function to collect form data
-            function getFormData(id) {
-                var element = document.getElementById(id);
-                return element.value;
-            }
-    
-            // Collect all form data
-            var studentData = {
-                uin: getFormData('studentUpdateUin'),
-                firstName: getFormData('studentUpdateFirstName'),
-                mInitial: getFormData('studentUpdateMInitial'),
-                lastName: getFormData('studentUpdateLastName'),
-                username: getFormData('studentUpdateUsername'),
-                password: getFormData('studentUpdatePassword'),
-                email: getFormData('studentUpdateEmail'),
-                discordName: getFormData('studentUpdateDiscordName'),
-                gender: getFormData('studentUpdateGender'),
-                hispanicLatino: getFormData('studentUpdateHispanicLatino'),
-                race: getFormData('studentUpdateRace'),
-                usCitizen: getFormData('studentUpdateUSCitizen'),
-                firstGeneration: getFormData('studentUpdateFirstGeneration'),
-                dob: getFormData('studentUpdateDoB'),
-                gpa: getFormData('studentUpdateGPA'),
-                major: getFormData('studentUpdateMajor'),
-                minor1: getFormData('studentUpdateMinor1'),
-                minor2: getFormData('studentUpdateMinor2'),
-                expectedGraduation: getFormData('studentUpdateExpectedGraduation'),
-                school: getFormData('studentUpdateSchool'),
-                classification: getFormData('studentUpdateClassification'),
-                phone: getFormData('studentUpdatePhone'),
-                studentType: getFormData('studentUpdateStudentType')
-            };
-    
-            // Log the student data to the console
-            console.log('Updating student information:', studentData);
-    
-            // Here we'd would send this data to the server
-
-            document.getElementById('updateStudentForm').reset();
-            alert('Information updated successfully');
-        });
-    </script>
-    <script>
-        function fetchStudentProfile() {
-            // Simulate fetching data from an API
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({
-                        uin: '930005170',
-                        firstName: 'John',
-                        mInitial: 'A',
-                        lastName: 'Doe',
-                        username: 'johndoe',
-                        userType: 'college_student',
-                        email: 'johndoe@example.com',
-                        discordName: 'JohnD#1234',
-                        gender: 'Male',
-                        hispanicLatino: 'No',
-                        race: 'Caucasian',
-                        usCitizen: 'Yes',
-                        firstGeneration: 'No',
-                        dob: '1995-01-01',
-                        gpa: '3.8',
-                        major: 'Computer Science',
-                        minor1: 'Mathematics',
-                        minor2: 'Physics',
-                        expectedGraduation: '2023',
-                        school: 'Engineering',
-                        classification: 'Senior',
-                        phone: '1234567890',
-                        studentType: 'Full-time'
-                    });
-                }, 1000); // Simulate network delay
-            });
-        }
-    
-        function populateProfile(data) {
-            document.getElementById('profileUin').textContent = data.uin;
-            document.getElementById('profileFirstName').textContent = data.firstName;
-            document.getElementById('profileMInitial').textContent = data.mInitial;
-            document.getElementById('profileLastName').textContent = data.lastName;
-            document.getElementById('profileUsername').textContent = data.username;
-            document.getElementById('profileUserType').textContent = data.userType;
-            document.getElementById('profileEmail').textContent = data.email;
-            document.getElementById('profileDiscordName').textContent = data.discordName;
-            document.getElementById('profileGender').textContent = data.gender;
-            document.getElementById('profileHispanicLatino').textContent = data.hispanicLatino;
-            document.getElementById('profileRace').textContent = data.race;
-            document.getElementById('profileUSCitizen').textContent = data.usCitizen;
-            document.getElementById('profileFirstGeneration').textContent = data.firstGeneration;
-            document.getElementById('profileDoB').textContent = data.dob;
-            document.getElementById('profileGPA').textContent = data.gpa;
-            document.getElementById('profileMajor').textContent = data.major;
-            document.getElementById('profileMinor1').textContent = data.minor1;
-            document.getElementById('profileMinor2').textContent = data.minor2;
-            document.getElementById('profileExpectedGraduation').textContent = data.expectedGraduation;
-            document.getElementById('profileSchool').textContent = data.school;
-            document.getElementById('profileClassification').textContent = data.classification;
-            document.getElementById('profilePhone').textContent = data.phone;
-            document.getElementById('profileStudentType').textContent = data.studentType;
-        }
-    
         document.addEventListener('DOMContentLoaded', function() {
-            fetchStudentProfile()
-                .then(data => populateProfile(data))
-                .catch(error => console.error('Error fetching profile data:', error));
-        });
-    </script>
+    // Fetch student profile information on page load
+    fetchStudentProfile();
+    });
+
+function fetchStudentProfile() {
+    fetch('get_user_details.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        if (responseData.user) {
+            populateProfile(responseData.user);
+        } else {
+            console.error('User data not found:', responseData);
+        }
+    })
+    .catch(error => console.error('Error fetching profile data:', error));
+}
+
+function populateProfile(data) {
+    document.getElementById('profileUin').textContent = data.UIN || '';
+    document.getElementById('profileFirstName').textContent = data.First_Name || '';
+    document.getElementById('profileMInitial').textContent = data.M_Initial || '';
+    document.getElementById('profileLastName').textContent = data.Last_Name || '';
+    document.getElementById('profileUsername').textContent = data.Username || '';
+    document.getElementById('profileUserType').textContent = data.User_Type || '';
+    document.getElementById('profileEmail').textContent = data.Email || '';
+    document.getElementById('profileDiscordName').textContent = data.Discord_Name || '';
+
+    // Fields for College_Student table
+    document.getElementById('profileGender').textContent = data.Gender || '';
+    document.getElementById('profileHispanicLatino').textContent = data.Hispanic_Latino !== undefined ? (data.Hispanic_Latino ? 'Yes' : 'No') : '';
+    document.getElementById('profileRace').textContent = data.Race || '';
+    document.getElementById('profileUSCitizen').textContent = data.US_Citizen !== undefined ? (data.US_Citizen ? 'Yes' : 'No') : '';
+    document.getElementById('profileFirstGeneration').textContent = data.First_Generation !== undefined ? (data.First_Generation ? 'Yes' : 'No') : '';
+    document.getElementById('profileDoB').textContent = data.DoB || '';
+    document.getElementById('profileGPA').textContent = data.GPA || '';
+    document.getElementById('profileMajor').textContent = data.Major || '';
+    document.getElementById('profileMinor1').textContent = data.Minor_1 || '';
+    document.getElementById('profileMinor2').textContent = data.Minor_2 || '';
+    document.getElementById('profileExpectedGraduation').textContent = data.Expected_Graduation || '';
+    document.getElementById('profileSchool').textContent = data.School || '';
+    document.getElementById('profileClassification').textContent = data.Current_Classification || '';
+    document.getElementById('profilePhone').textContent = data.Phone || '';
+    document.getElementById('profileStudentType').textContent = data.Student_Type || '';
+}
+  </script>
     <script>
         document.getElementById('deactivateAccountBtn').addEventListener('click', function() {
-            // Simulate account deactivation
-            console.log('Account deactivated (simulation)');
-            // Here we'd make an API call to deactivate the account
-    
-            alert('Your account has been deactivated.');
-        });
-    
-        document.getElementById('deleteAccountBtn').addEventListener('click', function() {
-            // Simulate account deletion
-            // Here we'd make an API call to delete the account
-    
-            if (confirm('Are you sure you want to permanently delete your account?')) {
-                // Proceed with deletion
-                console.log('Account deleted (simulation)');
-                alert('Your account has been deleted.');
+            if (confirm('Are you sure you want to deactivate your account?')) {
+                fetch('deactivate_user.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'uin=' + encodeURIComponent(document.getElementById('profileUin').textContent)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Account deactivated. You will be logged out.');
+                    // Redirect to logout script
+                    window.location.href = 'logout.php';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deactivating the account.');
+                });
             }
         });
+
+
+
+    
+        document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to permanently delete your account? This action cannot be undone.')) {
+                fetch('delete_user.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'uin=' + encodeURIComponent(document.getElementById('profileUin').textContent)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Account deleted. You will be logged out.');
+                    // Redirect to logout script
+                    window.location.href = 'logout.php';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the account.');
+                });
+            }
+        });
+
+
+
+</script>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    fetchAndUpdateForm();
+});
+
+function fetchAndUpdateForm() {
+    fetch('get_user_details.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        // Check if user data is present in the response
+        if (responseData.user) {
+            var userData = responseData.user; // Extract the user data
+
+            // Populate the form with the extracted user data
+            populateStudentForm(userData);
+            document.getElementById('userDetailsPlaceholder').style.display = 'block';
+        } else {
+            // Handle the case where user data is not present
+            alert('User data not found');
+            console.error('User data not found:', responseData);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error fetching user data');
+    });
+}
+
+
+function populateStudentForm(userData) {
+    var formHtml = `
+        <form id="updateStudentForm">
+            <input type="text" name="First_Name" placeholder="First Name" value="${userData.First_Name || ''}">
+            <input type="text" name="M_Initial" placeholder="Middle Initial" value="${userData.M_Initial || ''}">
+            <input type="text" name="Last_Name" placeholder="Last Name" value="${userData.Last_Name || ''}">
+            <input type="text" name="Username" placeholder="Username" value="${userData.Username || ''}">
+            <input type="password" name="Passwords" placeholder="New Password">
+            <input type="text" name="User_Type" placeholder="User Type" value="${userData.User_Type || ''}">
+            <input type="email" name="Email" placeholder="Email" value="${userData.Email || ''}">
+            <input type="text" name="Discord_Name" placeholder="Discord Name" value="${userData.Discord_Name || ''}">
+
+            <!-- Fields for College_Student table -->
+            <input type="text" name="Gender" placeholder="Gender" value="${userData.Gender || ''}">
+            <input type="text" name="Hispanic_Latino" placeholder="Hispanic/Latino (0 or 1)" value="${userData.Hispanic_Latino || ''}">
+            <input type="text" name="Race" placeholder="Race" value="${userData.Race || ''}">
+            <input type="text" name="US_Citizen" placeholder="US Citizen (0 or 1)" value="${userData.US_Citizen || ''}">
+            <input type="text" name="First_Generation" placeholder="First Generation (0 or 1)" value="${userData.First_Generation || ''}">
+            <input type="text" name="DoB" placeholder="DOB (YYYY-MM-DD)" value="${userData.DoB || ''}">
+            <input type="text" name="GPA" placeholder="GPA" value="${userData.GPA || ''}">
+            <input type="text" name="Major" placeholder="Major" value="${userData.Major || ''}">
+            <input type="text" name="Minor_1" placeholder="Minor 1" value="${userData.Minor_1 || ''}">
+            <input type="text" name="Minor_2" placeholder="Minor 2" value="${userData.Minor_2 || ''}">
+            <input type="text" name="Expected_Graduation" placeholder="Expected Grad Year" value="${userData.Expected_Graduation || ''}">
+            <input type="text" name="School" placeholder="School" value="${userData.School || ''}">
+            <input type="text" name="Current_Classification" placeholder="Current Classification" value="${userData.Current_Classification || ''}">
+            <input type="text" name="Phone" placeholder="Phone" value="${userData.Phone || ''}">
+            <input type="text" name="Student_Type" placeholder="Student Type" value="${userData.Student_Type || ''}">
+            
+            <button type="submit">Submit</button>
+        </form>
+    `;
+
+    // Replace the existing form or div content with the new form
+    document.getElementById('userDetailsPlaceholder').innerHTML = formHtml;
+    document.getElementById('userDetailsPlaceholder').style.display = 'block';
+
+    attachFormSubmitEvent();
+}
+
+
+        
+function attachFormSubmitEvent() {
+    var updateForm = document.getElementById('updateStudentForm');
+    if (updateForm) {
+        updateForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+
+            // Send the form data to update_student_info.php
+            fetch('update_student_info.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Show success or error message
+                // Refresh the page
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating.');
+            });
+        });
+    }
+}
     </script>
     
 </body>

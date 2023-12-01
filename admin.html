@@ -130,18 +130,24 @@
                 body: 'uin=' + uin
             })
             .then(response => response.json())
-            .then(data => {
-                // Display the user type in the placeholder
-                var userDetailsPlaceholder = document.getElementById('userDetailsPlaceholder');
-                userDetailsPlaceholder.innerHTML = '<p>User Type: ' + data.user_type + '</p>';
-                userDetailsPlaceholder.style.display = 'block';
+            .then(responseData => {
+                // Check if user data is present in the response
+                if (responseData.user) {
+                    var userData = responseData.user;
 
-                console.log(data);
+                    // Display the user type in the placeholder
+                    var userDetailsPlaceholder = document.getElementById('userDetailsPlaceholder');
+                    userDetailsPlaceholder.innerHTML = '<p>User Type: ' + userData.User_Type + '</p>';
+                    userDetailsPlaceholder.style.display = 'block';
 
-                if (data.User_Type != 'college_student') {
-                    displayUpdateFieldsForUser(data);
+                    if (userData.User_Type != 'college_student') {
+                        displayUpdateFieldsForUser(userData);
+                    } else {
+                        displayUpdateFieldsForStudent(userData);
+                    }
                 } else {
-                    displayUpdateFieldsForStudent(data);
+                    console.error('User data not found:', responseData);
+                    alert('User data not found');
                 }
             })
             .catch(error => {

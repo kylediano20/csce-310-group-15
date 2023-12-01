@@ -58,6 +58,18 @@
             });
         });
     </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+    
+            if (status === 'inactive') {
+                // Display a message or a reactivation option
+                alert('Your account is currently inactive. Please contact admin to reactivate.');
+            }
+        });
+    </script>
+    
     
 </body>
 </html>
