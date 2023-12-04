@@ -1,0 +1,86 @@
+<!--This was coded by: Jaden Reyes-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin and Student Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Cybersecurity Center Student Tracking and Reporting Tool</h1>
+    </header>
+
+    <div class="container" class="functionality">
+        <!-- Document Management Functionalities -->
+        <div id=student>
+            <h2>Student Document Management</h2>
+            <!-- Insert Document Form -->
+            <div>
+                <h3>Upload a Document</h3>
+                <form id="uploadDocumentForm">
+                    <label for="documentType">Document Type:</label>
+                    <input type="text" id="documentType" name="documentType" required>
+
+                    <label for="applicationNumber">Application Number:</label>
+                    <input type="text" id="applicationNumber" name="applicationNumber" required>
+
+                    <label for="documentFile">Select a Document:</label>
+                    <input type="file" id="documentFile" name="documentFile" accept=".pdf, .doc, .docx" required>
+
+                    <button type="submit">Upload Document</button>
+                </form>
+
+                <!-- Display Document ID -->
+                <div id="documentIdDisplay">
+                    <p>Document ID:</p>
+                </div>
+            </div>
+
+            <!-- Update Document Form -->
+            <div>
+                <h3>Replace or Edit Document</h3>
+                <form id="updateDocumentForm">
+                    <label for="updateDocumentID">Enter Document ID:</label>
+                    <input type="text" id="updateDocumentID" name="updateDocumentID" required>
+
+                    <label for="updatedDocumentFile">Select a New Document:</label>
+                    <input type="file" id="updatedDocumentFile" name="updatedDocumentFile" accept=".pdf, .doc, .docx" required>
+
+                    <button type="submit">Update Document</button>
+                </form>
+            </div>
+
+            <!-- Select Document -->
+            <div>
+                <h3>View Uploaded Documents</h3>
+                <!-- Form to enter Document ID for viewing -->
+                <form id="viewDocumentForm">
+                    <label for="viewDocumentID">Enter Document ID:</label>
+                    <input type="text" id="viewDocumentID" name="viewDocumentID" required>
+                    <button type="submit">View Document</button>
+                </form>
+
+                <!-- Display Uploaded Documents -->
+                <div id="documentList">
+                    <!-- Document list will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Delete Document -->
+            <div>
+                <h3>Remove a Document</h3>
+                <form id="deleteDocumentForm">
+                    <label for="deleteDocumentID">Enter Document ID:</label>
+                    <input type="text" id="deleteDocumentID" name="deleteDocumentID" required>
+                    <button type="submit">Delete Document</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
