@@ -1,8 +1,13 @@
 /*Coded by: Jaden Reyes for Event Management and Document Upload*/
+div {
+    margin-bottom: 15px;
+}
+h3 {
+    color:maroon;
+}
 body {
     font-family: Arial, sans-serif;
 }
-
 .container {
     width: 90%;
     margin: auto;
