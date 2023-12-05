@@ -76,7 +76,7 @@ $conn->close();
                         <input type="text" id="eventType" name="eventType" required>
                     </p>
                     <div>
-                        <button type="submit">Create Event</button>
+                        <button type="submit" onclick="createEventAlert()">Create Event</button>
                     </div>
                 </form>
             </div>
@@ -147,14 +147,19 @@ $conn->close();
                 <form id="deleteEventForm" method="post" action="deleteEvent.php">
                     <label for="deleteEventID">Enter Event ID:</label>
                     <input type="text" id="deleteEventID" name="deleteEventID" required>
-                    <button type="submit">Delete Event</button>
+                    <button type="submit" onclick="deleteEventAlert()">Delete Event</button>
                 </form>
             </div>
 
         </div>
     </div>
     <script>
-
+        function createEventAlert() {
+            alert("Event Created!"); 
+        }
+        function deleteEventAlert() {
+            alert("Event Deleted!"); 
+        }
         /* Function to access the Event information and autopopulate the form */
         function handleEditAccessButton() {
             var eventID = document.getElementById("editEventID").value;
@@ -216,7 +221,9 @@ $conn->close();
             .then(response => response.json())
             .then(result => {
                 console.log(result);
-                // Optionally, you can display a success message or perform other actions
+                alert("Event Updated!");
+                document.getElementById('editEventDetails').style.display = 'none';
+                document.getElementById('editEventID').value = '';
             })
             .catch(error => {
                 console.error("Error updating event details:", error);

@@ -53,19 +53,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Output only JSON, no HTML content before or after
     header('Content-Type: application/json');
 
+    $editEventData = fetchEventDetails($eventID);
+
+    // Output only JSON, no HTML content before or after
+    header('Content-Type: application/json');
+
     if ($editEventData) {
-        echo json_encode($editEventData);
+        $updateSuccess = updateEventDetails($eventID, $updateStartDate, $updateTime, $updateLocation, $updateEndDate, $updateEventType);
+
+        if ($updateSuccess) {
+            echo json_encode(['message' => 'Event updated successfully']);
+        } else {
+            echo json_encode(['error' => 'Failed to update event']);
+        }
     } else {
         echo json_encode(['error' => 'Event not found']);
+        exit();
     }
 
-    $updateSuccess = updateEventDetails($eventID, $updateStartDate, $updateTime, $updateLocation, $updateEndDate, $updateEventType);
-
-    if ($updateSuccess) {
-        echo json_encode(['message' => 'Event updated successfully']);
-    } else {
-        echo json_encode(['error' => 'Failed to update event']);
-    }
 
     exit();
 }
