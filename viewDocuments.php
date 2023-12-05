@@ -1,4 +1,5 @@
 <?php
+// This was coded by Jaden Reyes
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";
@@ -33,9 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Fetch the result
         $result = $stmt->get_result();
 
-        // Check if there are documents
         if ($result->num_rows > 0) {
-            // Output the document information in JSON format
             $documents = $result->fetch_all(MYSQLI_ASSOC);
             echo json_encode(["documents" => $documents]);
         } else {

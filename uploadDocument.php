@@ -1,4 +1,5 @@
 <?php
+// This was coded by Jaden Reyes
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";

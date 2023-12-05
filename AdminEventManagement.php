@@ -1,4 +1,5 @@
 <!--This was coded by: Jaden Reyes-->
+<!--php to show the Event ID-->
 <?php
 // Database connection details
 $host = "localhost";
@@ -154,6 +155,7 @@ $conn->close();
         </div>
     </div>
     <script>
+        // functions to alert users that event has been created/deleted
         function createEventAlert() {
             alert("Event Created!"); 
         }

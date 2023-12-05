@@ -1,4 +1,5 @@
 <?php
+// This was coded by Jaden Reyes
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";
@@ -16,7 +17,7 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["deleteDocumentID"])) {
         $docNum = intval($_POST["deleteDocumentID"]);
-
+        // Delete the document from the entered doc_num
         $deleteDocumentQuery = "DELETE FROM documentation WHERE Doc_Num = ?";
         $stmtTracking = $conn->prepare($deleteDocumentQuery);
 
