@@ -14,24 +14,21 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $applicationNumber = $_POST['applicationNumber'];
-    $documentLink = $_POST['documentLink'];
-    $documentType = $_POST['documentType'];
+    $eventID = $_POST['removeEventAttendeeID']; 
+    $uin = $_POST['removeEventUIN']; 
 
-    // Insert into documents table
-    $stmt = $conn->prepare("INSERT INTO documentation (App_Num, Link, Doc_Type) VALUES (?, ?, ?)");
-    $stmt->bind_param("iss", $applicationNumber, $documentLink, $documentType);
+    $stmt = $conn->prepare("DELETE FROM event_tracking WHERE Event_ID = ? AND UIN = ?;");
+    $stmt->bind_param("ii", $eventID, $uin);
     $stmt->execute();
 
     if ($stmt->error) {
         echo "Error: " . $stmt->error;
     } else {
-        echo "Document uploaded successfully";
+        echo "Attendee created successfully";
     }
     $stmt->close();
 }
 
 $conn->close();
-
-header("Location: StudentDocumentManagement.php");
+header("Location: AdminEventManagement.php");
 ?>

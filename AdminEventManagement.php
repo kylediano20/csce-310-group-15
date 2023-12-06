@@ -1,5 +1,4 @@
 <!--This was coded by: Jaden Reyes-->
-<!--php to show the Event ID-->
 <?php
 // Database connection details
 $host = "localhost";
@@ -84,8 +83,8 @@ $conn->close();
 
             <hr style = "margin-top: 25px;">
 
-            <!-- Edit Event Details Form -->
-            <div>
+             <!-- Edit Event Details Form -->
+             <div>
                 <h3>Update Event Details</h3>
                 <form id="editEventForm">     
                     <label for="editEventID">Enter Event ID:</label>
@@ -113,6 +112,47 @@ $conn->close();
                         <input type="text" id="updateEventType" name="updateEventType" placeholder="Event Type">
                     </p>
                     <button type="submit" onclick="handleUpdateEventDetails()">Update Event Details</button>
+                </div>
+            </div>
+
+            <hr style = "margin-top: 25px;">
+
+            <!--Attendance Updates-->
+            <div>
+                <h3>Update Attendance Details</h3>
+                <!--List all of the attendees (UIN, First & Last Name)-->
+                <div>
+                    <h4>View Attendees</h4>
+                    <form id="viewEventAttendees" action = "retrieveAttendees.php" method = "POST">
+                        <label for="viewEventAttendeesID">Enter Event ID:</label>
+                        <input type="text" id="viewEventAttendeesID" name="viewEventAttendeesID" required>
+                        <button type="submit">View Attendees</button>
+                    </form>
+                    <div id="attendeesList">
+                        <!-- attendees list will be displayed here -->
+                    </div>
+                </div>
+                <!--Add Attendees-->
+                <div>
+                    <h4>Add Attendees</h4>
+                    <form id="addEventAtendees" action = "addAttendee.php" method = "POST">
+                        <label for="addEventAttendeeID">Enter Event ID:</label>
+                        <input type="text" id="addEventAttendeeID" name="addEventAttendeeID" required>
+                        <label for="addEventUIN">Enter UIN:</label>
+                        <input type="text" id="addEventUIN" name="addEventUIN" required>
+                        <button type="submit" onclick = "addAttendeeEvent()">Add Attendee</button>
+                    </form>
+                </div>
+                <!--Delete Attendees-->
+                <div>
+                    <h4>Remove Attendees</h4>
+                    <form id="removeEventAtendees" action = "removeAttendee.php" method = "POST">
+                        <label for="removeEventAttendeeID">Enter Event ID:</label>
+                        <input type="text" id="removeEventAttendeeID" name="removeEventAttendeeID" required>
+                        <label for="removeEventUIN">Enter UIN:</label>
+                        <input type="text" id="removeEventUIN" name="removeEventUIN" required>
+                        <button type="submit" onclick = "removeAttendeeEvent()">Remove Attendee</button>
+                    </form>
                 </div>
             </div>
 
@@ -155,14 +195,20 @@ $conn->close();
         </div>
     </div>
     <script>
-        // functions to alert users that event has been created/deleted
+        /* functions for the alerts */
         function createEventAlert() {
             alert("Event Created!"); 
         }
         function deleteEventAlert() {
             alert("Event Deleted!"); 
         }
-        /* Function to access the Event information and autopopulate the form */
+        function addAttendeeEvent(){
+            alert("Attendee Added!")
+        }
+        function removeAttendeeEvent(){
+            alert("Attendee Removed!")
+        }
+         /* Function to access the Event information and autopopulate the form */
         function handleEditAccessButton() {
             var eventID = document.getElementById("editEventID").value;
 
@@ -197,7 +243,6 @@ $conn->close();
         }
         /* Function to update the Event details in the database */
         function handleUpdateEventDetails() {
-            // Retrieve the form values
             var eventID = document.getElementById('editEventID').value;
             var startDate = document.getElementById('updateStartDate').value;
             var time = document.getElementById('updateTime').value;
@@ -258,7 +303,43 @@ $conn->close();
                 console.error("Error fetching event details:", error);
             });
         }
+        /* function to view Attendees */
+        function viewAttendees(event) {
+            event.preventDefault();
 
+            var viewEventAttendeesID = document.getElementById('viewEventAttendeesID').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'retrieveAttendees.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.error) {
+                        alert('Error: ' + response.error);
+                    } else if (response.documents) {
+                        response.documents.sort(function (a, b) {
+                            return a.UIN - b.UIN;
+                        });
+
+                        // Populate the attendeesList div with the attendee information
+                        var attendeesListDiv = document.getElementById('attendeesList');
+                        attendeesListDiv.innerHTML = "";
+
+                        response.documents.forEach(function (attendee) {
+                            var attendeeInfo = "UIN: " + attendee.UIN + "<br>" +
+                                "First Name: " + attendee.First_Name + "<br>" +
+                                "Last Name: " + attendee.Last_Name + "<br>";
+                            attendeesListDiv.innerHTML += attendeeInfo;
+                        });
+                    } else {
+                        alert('Message: ' + response.message);
+                    }
+                }
+            };
+            xhr.send('viewEventAttendeesID=' + encodeURIComponent(viewEventAttendeesID));
+        }
+        document.getElementById('viewEventAttendees').addEventListener('submit', viewAttendees);
     </script>
 </body>
 </html>

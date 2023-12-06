@@ -14,13 +14,13 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $viewDocumentUIN = $_POST['viewDocumentUIN'];
+    $viewEventAttendeesID = $_POST['viewEventAttendeesID'];
 
     // Select documents based on UIN - used view here
     $stmt = $conn->prepare("
-        SELECT * FROM student_doc_v WHERE UIN = ?"
+        SELECT * FROM event_attendance_v WHERE Event_ID = ?"
     );
-    $stmt->bind_param("i", $viewDocumentUIN);
+    $stmt->bind_param("i", $viewEventAttendeesID);
     $stmt->execute();
 
     if ($stmt->error) {
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $documents = $result->fetch_all(MYSQLI_ASSOC);
             echo json_encode(["documents" => $documents]);
         } else {
-            echo json_encode(["message" => "No documents found for the given UIN"]);
+            echo json_encode(["message" => "No attendees found for the given ID"]);
         }
     }
 

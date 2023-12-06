@@ -1,5 +1,3 @@
-<!--This was coded by: Jaden Reyes-->
-<!--php to show the Doc ID-->
 <?php
 // Database connection details
 $host = "localhost";
@@ -54,8 +52,7 @@ $conn->close();
                     <p>
                         <strong>Document Link:</strong>
                         <input type="text" id="documentLink" name="documentLink" required>
-
-                    <p>
+                    </p>
                     <button type="button" onclick = "documentUploadAlert()">Upload Document</button>
                 </form>
                 <!-- Display Document ID -->
@@ -95,6 +92,7 @@ $conn->close();
                 </div>
             </div>
 
+
             <hr style = "margin-top: 25px;">
 
             <!-- Select Document -->
@@ -128,35 +126,40 @@ $conn->close();
         </div>
     </div>
     <script>
-        // function to alert user that doc has been successfully deleted
+        /* Function for alerting document delete */
         function deleteDocAlert() {
             alert("Document Deleted!"); 
         }
-        /* Function to access the documentID information and show the div */
+        /* Function for document update */
         function documentUploadAlert() {
             // Display Document ID
             document.getElementById('documentIdDisplay').style.display = 'block';
+
             // Get form data
             var formData = new FormData(document.getElementById('uploadDocumentForm'));
 
+            // Send form data asynchronously using AJAX
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'uploadDocument.php', true);
             xhr.onload = function () {
                 if (xhr.status === 200) {
+                    // Successfully uploaded, display Document ID
                     var response = JSON.parse(xhr.responseText);
                     document.getElementById('displayDocumentID').innerText = response.documentId;
                 } else {
+                    // Handle error
                     console.error('Error uploading document');
                 }
             };
             xhr.send(formData);
+
+            // Prevent the form from submitting immediately
             return false;
         }
-        // Function to display the edit document details fields
+        /* Functions for edit events */
         function editDocumentDetails() {
             document.getElementById('updateDocumentDetails').style.display = 'block';
         }
-        /* Function to update the document details */
         function handleUpdateDocumentDetails() {
             var docLink = document.getElementById('updateDocLink').value;
             var docType = document.getElementById('updateDocType').value;
@@ -188,7 +191,7 @@ $conn->close();
                 }
             })
         }
-        // Function to handle form submission and display documents
+        /* Function to handle form submission and view documents */
         function viewDocuments() {
             event.preventDefault();
 

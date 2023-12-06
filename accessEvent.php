@@ -1,5 +1,4 @@
 <?php
-// This was coded by Jaden Reyes
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";
@@ -16,7 +15,7 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $eventID = $_POST['accessEventID']; 
-    // Select all columns where event id matches
+
     $stmt = $conn->prepare("SELECT * FROM events WHERE EVENT_ID = ?");
     $stmt->bind_param("s", $eventID);
     $stmt->execute();
@@ -32,11 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Event not found!";
     }
-
     $stmt->close();
 }
-
 $conn->close();
 header("Location: AdminEventManagement.php");
-
 ?>

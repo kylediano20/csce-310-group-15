@@ -1,5 +1,4 @@
 <?php
-// This was coded by Jaden Reyes
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";
@@ -33,11 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "New event created successfully";
     }
-
     $stmt->close();
 }
-
 $conn->close();
-
 header("Location: AdminEventManagement.php");
 ?>

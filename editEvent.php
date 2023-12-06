@@ -1,5 +1,4 @@
 <?php
-// This was coded by Jaden Reyes
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";
@@ -14,7 +13,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// function to get the event details already there
 function fetchEventDetails($eventID) {
     global $conn;
 
@@ -27,7 +25,7 @@ function fetchEventDetails($eventID) {
 
     return $editEventData;
 }
-// function to perform the actual updates of the table
+
 function updateEventDetails($eventID, $startDate, $time, $location, $endDate, $eventType) {
     global $conn;
 
@@ -72,11 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(['error' => 'Event not found']);
         exit();
     }
-
-
     exit();
 }
 
 $conn->close();
 header("Location: AdminEventManagement.php");
+
 ?>

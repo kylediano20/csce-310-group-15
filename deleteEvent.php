@@ -1,5 +1,4 @@
 <?php
-// This was coded by Jaden Reyes
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";
@@ -14,7 +13,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if the form data is set
     if (isset($_POST["deleteEventID"])) {
         $eventID = $_POST["deleteEventID"];
 
@@ -32,10 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmtEvent->execute();
         $stmtEvent->close();
         header("Location: AdminEventManagement.php");
-
         exit();
     }
 }
-
 $conn->close();
 ?>
