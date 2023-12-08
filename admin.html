@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard</title>
+        <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+    </head>
+<body>
+    <header>
+        <h1>Cybersecurity Center Student Tracking and Reporting Tool </h1>
+    </header>
+    <h1>Admin Dashboard</h1>
+    <div id="admin" class="admin-functions functionality">
+        <h2>Admin Functionalities</h2>
+        <!-- Insert Admin -->
+        <div>
+            <h3>Add New Administrator</h3>
+            <form id="addAdminForm">
+                <input type="number" name="uin" placeholder="UIN" required>
+                <input type="text" name="firstName" placeholder="First Name" required>
+                <input type="text" name="lastName" placeholder="Last Name" required>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="discordName" placeholder="Discord Name" required>
+                <button type="submit">Add Administrator</button>
+            </form>
+            
+            
+        </div>
+        <!-- Update Admin -->
+        <div>
+            <h3>Modify User Roles or Details</h3>
+            <form id="fetchUserDetailsForm">
+                <input type="number" id="fetchUin" name="uin" placeholder="UIN" required>
+                <button type="submit">Fetch User Details</button>
+            </form>
+            
+            <div id="userDetailsPlaceholder" style="display: none;">
+                <!-- Placeholder to display the user type -->
+            </div>
+            
+            
+        </div>
+        <!-- Select Admin -->
+        <div>
+            <h3>User Types and Roles</h3>
+            <button onclick="fetchUserTypesAndRoles()">Refresh User Types and Roles</button>
+            <table id="usersTable">
+                <tr>
+                    <th>UIN</th>
+                    <th>User Type</th>
+                    <th>Student Type</th>
+                </tr>
+            </table>
+        </div>
+        <!-- Delete Admin -->
+        <div>
+            <h3>Manage User Account</h3>
+    <form id="manageUserForm">
+        <label for="manageUin">Enter UIN of User:</label>
+        <input type="text" id="manageUin" placeholder="Enter UIN">
+        <button onclick="deactivateUser()">Deactivate User</button>
+        <button onclick="confirmDelete()">Delete User</button>
+    </form>
+        </div>
+    </div>
+
+    <!-- Add a logout button or link -->
+    <a href="logout.php">Log Out</a>
+
+    <script>
+        document.getElementById('addAdminForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+    
+            var formData = new FormData(this);
+    
+            fetch('add_admin.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Show the response from add_admin.php
+                document.getElementById('addAdminForm').reset(); // Clear the form
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while creating the administrator account.');
+            });
+        });
+    </script>
+        <script>
+            // Function to add a new row to the table
+            function addUserRow(uin, userType, studentType) {
+                var table = document.getElementById('usersTable');
+                var row = table.insertRow();
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                cell1.textContent = uin;
+                cell2.textContent = userType;
+                cell3.textContent = studentType || 'N/A'; // Show 'N/A' if studentType is not provided
+            }
+        
+            // Example usage - to be replaced with api
+            document.addEventListener('DOMContentLoaded', function() {
+                // Fake data for demonstration purposes
+                var fakeData = [
+                    { uin: '930005170', userType: 'admin', studentType: '' },
+                    { uin: '930005171', userType: 'college_student', studentType: 'Undergraduate' },
+                    // ... more fake data ...
+                ];
+        
+                // Populate the table with the fake data
+                fakeData.forEach(function(user) {
+                    addUserRow(user.uin, user.userType, user.studentType);
+                });
+            });
+        </script>
+        <script>
+            document.getElementById('fetchUserDetailsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var uin = document.getElementById('fetchUin').value;
+
+            fetch('get_user_details.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'uin=' + uin
+            })
+            .then(response => response.json())
+            .then(responseData => {
+                // Check if user data is present in the response
+                if (responseData.user) {
+                    var userData = responseData.user;
+
+                    // Display the user type in the placeholder
+                    var userDetailsPlaceholder = document.getElementById('userDetailsPlaceholder');
+                    userDetailsPlaceholder.innerHTML = '<p>User Type: ' + userData.User_Type + '</p>';
+                    userDetailsPlaceholder.style.display = 'block';
+
+                    if (userData.User_Type != 'college_student') {
+                        displayUpdateFieldsForUser(userData);
+                    } else {
+                        displayUpdateFieldsForStudent(userData);
+                    }
+                } else {
+                    console.error('User data not found:', responseData);
+                    alert('User data not found');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching user details.');
+            });
+        });
+
+        function attachFormListeners() {
+            // Attach event listener to updateUserForm (if it exists)
+            var updateUserForm = document.getElementById('updateUserForm');
+            if (updateUserForm) {
+                updateUserForm.addEventListener('submit', function(event) {
+                    handleFormSubmit(event, 'update_user.php'); // PHP script for general users
+                });
+            }
+
+            // Attach event listener to updateCollegeStudentForm (if it exists)
+            var updateCollegeStudentForm = document.getElementById('updateCollegeStudentForm');
+            if (updateCollegeStudentForm) {
+                updateCollegeStudentForm.addEventListener('submit', function(event) {
+                    handleFormSubmit(event, 'update_college_student.php'); // PHP script for college students
+                });
+            }
+        }
+
+        function handleFormSubmit(event, scriptUrl) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+
+            // Log form data for debugging
+            console.log("Form Data Submitted:");
+            for (var pair of formData.entries()) {
+                console.log(pair[0]+ ': ' + pair[1]); 
+            }
+
+            fetch(scriptUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Update successful');
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating.');
+            });
+        }
+
+
+            function displayUpdateFieldsForUser(user) {
+                var formHtml = `
+                    <h3>Update User Details</h3>
+                    <form id="updateUserForm">
+                        <input type="hidden" name="uin" value="${user.UIN}">
+                        <input type="text" name="First_Name" placeholder="First Name" value="${user.First_Name || ''}">
+                        <input type="text" name="M_Initial" placeholder="Middle Initial" value="${user.M_Initial || ''}">
+                        <input type="text" name="Last_Name" placeholder="Last Name" value="${user.Last_Name || ''}">
+                        <input type="text" name="Username" placeholder="Username" value="${user.Username || ''}">
+                        <input type="password" name="Passwords" placeholder="New Password">
+                        <input type="text" name="User_Type" placeholder="User Type" value="${user.User_Type || ''}">
+                        <input type="email" name="Email" placeholder="Email" value="${user.Email || ''}">
+                        <input type="text" name="Discord_Name" placeholder="Discord Name" value="${user.Discord_Name || ''}">
+                        <button type="submit">Update User</button>
+                    </form>
+                `;
+
+                document.getElementById('userDetailsPlaceholder').innerHTML = formHtml;
+                document.getElementById('userDetailsPlaceholder').style.display = 'block';
+                // Attach event listeners to forms
+                attachFormListeners();
+            }
+
+            function displayUpdateFieldsForStudent(user) {
+                var formHtml2 = `
+                    <h3>Update Student Details</h3>
+                    <form id="updateCollegeStudentForm">
+                        <input type="hidden" name="uin" value="${user.UIN}">
+                        <input type="text" name="First_Name" placeholder="First Name" value="${user.First_Name || ''}">
+                        <input type="text" name="M_Initial" placeholder="Middle Initial" value="${user.M_Initial || ''}">
+                        <input type="text" name="Last_Name" placeholder="Last Name" value="${user.Last_Name || ''}">
+                        <input type="text" name="Username" placeholder="Username" value="${user.Username || ''}">
+                        <input type="password" name="Passwords" placeholder="New Password">
+                        <input type="text" name="User_Type" placeholder="User Type" value="${user.User_Type || ''}">
+                        <input type="email" name="Email" placeholder="Email" value="${user.Email || ''}">
+                        <input type="text" name="Discord_Name" placeholder="Discord Name" value="${user.Discord_Name || ''}">
+                        <input type="text" name="Gender" id="gender" placeholder="Gender" value="${user.Gender || ''}">
+                        <input type="text" name="Hispanic_Latino" id="hispanicLatino" placeholder="Hispanic/Latino (0 or 1)" value="${user.Hispanic_Latino || ''}">
+                        <input type="text" name="Race" id="race" placeholder="Race" value="${user.Race || ''}">
+                        <input type="text" name="US_Citizen" id="usCitizen" placeholder="US Citizen (0 or 1)" value="${user.US_Citizen || ''}">
+                        <input type="text" name="First_Generation" id="firstGeneration" placeholder="First Generation (0 or 1)" value="${user.First_Generation || ''}">
+                        <input type="text" name="DoB" id="dob" placeholder="DOB (YYYY-MM-DD)" value="${user.DoB || ''}">
+                        <input type="text" name="GPA" id="gpa" placeholder="GPA" value="${user.GPA || ''}">
+                        <input type="text" name="Major" id="major" placeholder="Major" value="${user.Major || ''}">
+                        <input type="text" name="Minor_1" id="minor1" placeholder="Minor 1" value="${user.Minor_1 || ''}">
+                        <input type="text" name="Minor_2" id="minor2" placeholder="Minor 2" value="${user.Minor_2 || ''}">
+                        <input type="text" name="Expected_Graduation" id="expectedGraduation" placeholder="Expected Grad Year" value="${user.Expected_Graduation || ''}">
+                        <input type="text" name="School" id="school" placeholder="School" value="${user.School || ''}">
+                        <input type="text" name="Current_Classification" id="currentClassification" placeholder="Current Classification" value="${user.Current_Classification || ''}">
+                        <input type="text" name="Phone" id="phone" placeholder="Phone" value="${user.Phone || ''}">
+                        <input type="text" name="Student_Type" id="studentType" placeholder="Student Type" value="${user.Student_Type || ''}">
+                        <button type="submit">Update Student</button>
+                    </form>
+                `;
+
+                document.getElementById('userDetailsPlaceholder').innerHTML = formHtml2;
+                document.getElementById('userDetailsPlaceholder').style.display = 'block';
+                // Attach event listeners to forms
+                attachFormListeners();
+            }
+
+        </script>
+        
+        <script>
+            function fetchUserTypesAndRoles() {
+                fetch('get_user_types_and_roles.php')
+                .then(response => response.json())
+                .then(data => {
+                    // Call function to update the table with this data
+                    updateUsersTable(data);
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        
+            // Call the function on page load or based on some other event
+            fetchUserTypesAndRoles();
+
+            // Function to update the table with user types and roles
+            function updateUsersTable(data) {
+                var table = document.getElementById('usersTable');
+
+                // Clear existing rows (except the header)
+                for (var i = table.rows.length - 1; i > 0; i--) {
+                    table.deleteRow(i);
+                }
+
+                // Add new rows from fetched data
+                data.forEach(function(user) {
+                    var row = table.insertRow();
+                    row.insertCell(0).textContent = user.UIN;
+                    row.insertCell(1).textContent = user.User_Type;
+                    row.insertCell(2).textContent = user.Student_Type || 'N/A'; // Display 'N/A' if Student_Type is not provided
+                });
+            }
+
+            // Call the function to fetch user types and roles when the page loads
+            document.addEventListener('DOMContentLoaded', function() {
+                fetchUserTypesAndRoles();
+            });
+        </script>
+        
+        <script>
+            function deactivateUser() {
+            var uin = document.getElementById('manageUin').value;
+
+            fetch('deactivate_user.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'uin=' + uin
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function confirmDelete() {
+            var uin = document.getElementById('manageUin').value;
+            if (confirm("Are you sure you want to delete the user with UIN: " + uin + "?")) {
+                deleteUser(uin);
+            }
+        }
+
+        function deleteUser(uin) {
+            fetch('delete_user.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'uin=' + uin
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        </script>
+        
+        
+</body>
+</html>

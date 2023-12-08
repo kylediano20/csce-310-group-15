@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    width: 90%;
+    margin: auto;
+}
+header {
+    background: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+nav {
+    background: #555;
+    padding: 10px 0;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0 15px;
+}
+.active {
+    display: block;
+}
+.functionality {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f4f4f4;
+}
