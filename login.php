@@ -36,9 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['uin'] = $row['UIN'];
 
         if ($_SESSION['role'] == 'admin') {
-            header("Location: admin.html");
+            header("Location: admin_test.html");
         } else {
-            header("Location: student.html");
+            header("Location: student_test.html");
         }
         exit;
     } else {
