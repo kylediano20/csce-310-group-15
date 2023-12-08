@@ -11,24 +11,22 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $uinToDelete = $_POST["AppDelete"];
 
-    if()
-    $programName = $_POST["ProgramName"];
-    $programDesc = $_POST["ProgramDesc"];
-
-    $stmt = $conn->prepare("INSERT INTO programs (Name, Description) VALUES (?, ?)");
-    $stmt->bind_param("ss", $programName, $programDesc);
+    $stmt = $conn->prepare("DELETE FROM applications WHERE UIN = ?");
+    $stmt->bind_param("i", $uinToDelete);
     $stmt->execute();
-    
+
     if ($stmt->error) {
         echo "Error: " . $stmt->error;
     } else {
-        echo "New Program created successfully";
+        echo "Applications deleted successfully";
     }
+
     $stmt->close();
-    
 }
+
 $conn->close();
-header("Location: ProgramInfoManagement.php");
+header("Location: ApplicationInformationManagement.php");
 ?>
