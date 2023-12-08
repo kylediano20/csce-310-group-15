@@ -22,18 +22,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userType = 'college_student';
     $email = $_POST['email'];
 
-    // Insert into Users table
-    $stmt = $conn->prepare("INSERT INTO Users (UIN, First_Name, Last_Name, Username, Passwords, User_Type, Email) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("issssss", $uin, $firstName, $lastName, $username, $password, $userType, $email);
-    $stmt->execute();
-
-    // Insert into College_Student table
-    $stmt = $conn->prepare("INSERT INTO College_Student (UIN) VALUES (?)");
-    $stmt->bind_param("i", $uin);
-    $stmt->execute();
-
-    $stmt->close();
-    echo "New student created successfully";
+    // Insert into Users table with a try-catch block to handle the unique constraint violation
+    try {
+        $insert_stmt = $conn->prepare("INSERT INTO Users (UIN, First_Name, Last_Name, Username, Passwords, User_Type, Email) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $insert_stmt->bind_param("issssss", $uin, $firstName, $lastName, $username, $password, $userType, $email);
+        
+        if ($insert_stmt->execute()) {
+            // Insert into College_Student table
+            $insert_college_stmt = $conn->prepare("INSERT INTO College_Student (UIN) VALUES (?)");
+            $insert_college_stmt->bind_param("i", $uin);
+            
+            if ($insert_college_stmt->execute()) {
+                echo "New student created successfully";
+            } else {
+                echo "Error: Failed to create a student.";
+            }
+            
+            $insert_college_stmt->close();
+        } else {
+            echo "Error: Failed to create a student.";
+        }
+        
+        $insert_stmt->close();
+    } catch (Exception $e) {
+        echo "Error: Username already exists. Please choose a different username.";
+    }
 }
 
 $conn->close();

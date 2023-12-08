@@ -22,18 +22,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $discordName = $_POST['discordName'];
 
-    // Insert into Users table
-    $stmt = $conn->prepare("INSERT INTO Users (UIN, First_Name, Last_Name, Username, Passwords, User_Type, Email, Discord_Name) VALUES (?, ?, ?, ?, ?, 'admin', ?, ?)");
-    $stmt->bind_param("issssss", $uin, $firstName, $lastName, $username, $password, $email, $discordName);
-    $stmt->execute();
-
-    if ($stmt->error) {
-        echo "Error: " . $stmt->error;
-    } else {
-        echo "New administrator created successfully";
+    // Insert into Users table with a try-catch block to handle the unique constraint violation
+    try {
+        $stmt = $conn->prepare("INSERT INTO Users (UIN, First_Name, Last_Name, Username, Passwords, User_Type, Email, Discord_Name) VALUES (?, ?, ?, ?, ?, 'admin', ?, ?)");
+        $stmt->bind_param("issssss", $uin, $firstName, $lastName, $username, $password, $email, $discordName);
+        
+        if ($stmt->execute()) {
+            echo "New administrator created successfully";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+        
+        $stmt->close();
+    } catch (Exception $e) {
+        if ($conn->errno == 1062) {
+            echo "Error: Username already exists. Please choose a different username.";
+        } else {
+            echo "Error: " . $e->getMessage();
+        }
     }
-
-    $stmt->close();
 }
 
 $conn->close();
