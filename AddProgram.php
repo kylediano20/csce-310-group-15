@@ -13,7 +13,6 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    if()
     $programName = $_POST["ProgramName"];
     $programDesc = $_POST["ProgramDesc"];
 

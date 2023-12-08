@@ -119,14 +119,17 @@ if ($conn->connect_error) {
 
   <div class="ReviewApp">
     <h3>Review Application:</h3>
-    <div class="ReviewApplication">
-      <input type="text" id="ReviewApp" placeholder="Enter Applicant UIN">
-      <p>Application Number:</p>
-      <p>Program Number:</p>
-      <p>Uncompleted Certifications:</p>
-      <p>Completed Certifications:</p>      
+    <div id = "viewApplication" class="ReviewApplication">
+      <form method="POST" action="ViewApplication.php">
+        <input type="text" id="ReviewApp" placeholder="Enter Applicant UIN">
+        <button type="submit" id="Viewapp">Review Application</button>
+        <p></p>
+      </form>
+      <div id="applicationList">
+      </div>
     </div>
   </div>
+
   <div class="RemoveProgress">
     <h3>Delete progress record:</h3>
     <div class="DeleteApplication">
@@ -161,6 +164,48 @@ if ($conn->connect_error) {
       var textBox = document.getElementById('ComDetailsEdit');
       textBox.style.display = checkbox.checked ? 'block' : 'none';
     }
+    
+    function viewApplication() {
+      event.preventDefault();
+
+      var reviewAppUIN = document.getElementById('ReviewApp').value; // Corrected the input field ID
+      var xhr = new XMLHttpRequest(); // Corrected the object creation
+
+      xhr.open('POST', 'ViewApplication.php', true); // Corrected the PHP file name
+      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+      xhr.onreadystatechange = function () {
+          console.log(xhr.responseText); // Add this line to see the response text in the console
+          if (xhr.readyState == 4 && xhr.status == 200) {
+
+              var response = JSON.parse(xhr.responseText);
+              if (response.error) {
+                  alert('Error: ' + response.error);
+              } else if (response.documents) {
+                  response.documents.sort(function (a, b) {
+                      return a.Doc_Num - b.Doc_Num;
+                  });
+
+                  var applicationListDiv = document.getElementById('applicationList'); // Corrected the div ID
+                  applicationListDiv.innerHTML = "";
+
+                  response.documents.forEach(function (document) {
+                      var documentInfo = "Program Number: " + document.Program_Num + "<br>" +
+                          "Uncommitted Certificate: " + document.Uncom_Cert + "<br>" +
+                          "Committed Certificate: " + document.Com_Cert + "<br>" +
+                          "Purpose Statement: " + document.Purpose_Statement + "<br><br>";
+
+                      applicationListDiv.innerHTML += documentInfo;
+                  });
+              } else {
+                  alert('Message: ' + response.message);
+              }
+          }
+      };
+      xhr.send('ReviewApp=' + encodeURIComponent(reviewAppUIN)); // Corrected the parameter name
+  }
+
+  document.getElementById('viewApplication').addEventListener('submit', viewApplication);
 
   </script>
 </body>
