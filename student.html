@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Dashboard</title>
+        <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+    </head>
+<body>
+    <header>
+        <h1>Cybersecurity Center Student Tracking and Reporting Tool </h1>
+    </header>
+    <h1>Student Dashboard</h1>
+    <div id="student" class="student-functions functionality">
+        <h2>Student Functionalities</h2>
+        <!-- Update Student -->
+        <div>
+            <h3>Update Your Information</h3>
+            <div id="userDetailsPlaceholder" style="display: none;">
+                <!-- The dynamically created form will be inserted here -->
+            </div>
+        </div>
+        <!-- Select Student -->
+        <div>
+            <h3>Access Profile Information</h3>
+            <!-- Functionality to access profile information -->
+            <div id="studentProfile">
+                <!-- Placeholders for Users table fields -->
+                <p><strong>UIN:</strong> <span id="profileUin"></span></p>
+                <p><strong>First Name:</strong> <span id="profileFirstName"></span></p>
+                <p><strong>Middle Initial:</strong> <span id="profileMInitial"></span></p>
+                <p><strong>Last Name:</strong> <span id="profileLastName"></span></p>
+                <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+                <p><strong>User Type:</strong> <span id="profileUserType"></span></p>
+                <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+                <p><strong>Discord Name:</strong> <span id="profileDiscordName"></span></p>
+    
+                <!-- Placeholders for College_Student table fields -->
+                <p><strong>Gender:</strong> <span id="profileGender"></span></p>
+                <p><strong>Hispanic/Latino:</strong> <span id="profileHispanicLatino"></span></p>
+                <p><strong>Race:</strong> <span id="profileRace"></span></p>
+                <p><strong>U.S. Citizen:</strong> <span id="profileUSCitizen"></span></p>
+                <p><strong>First Generation:</strong> <span id="profileFirstGeneration"></span></p>
+                <p><strong>Date of Birth:</strong> <span id="profileDoB"></span></p>
+                <p><strong>GPA:</strong> <span id="profileGPA"></span></p>
+                <p><strong>Major:</strong> <span id="profileMajor"></span></p>
+                <p><strong>Minor 1:</strong> <span id="profileMinor1"></span></p>
+                <p><strong>Minor 2:</strong> <span id="profileMinor2"></span></p>
+                <p><strong>Expected Graduation:</strong> <span id="profileExpectedGraduation"></span></p>
+                <p><strong>School:</strong> <span id="profileSchool"></span></p>
+                <p><strong>Current Classification:</strong> <span id="profileClassification"></span></p>
+                <p><strong>Phone:</strong> <span id="profilePhone"></span></p>
+                <p><strong>Student Type:</strong> <span id="profileStudentType"></span></p>
+            </div>
+        </div>
+        <!-- Delete Student -->
+        <div>
+            <!-- Functionality to deactivate an account -->
+            <div>
+                <h3>Account Settings</h3>
+                <button type="button" id="deactivateAccountBtn">Deactivate Account</button>
+                <button type="button" id="deleteAccountBtn">Delete Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Add a logout button or link -->
+    <a href="logout.php">Log Out</a>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Fetch student profile information on page load
+    fetchStudentProfile();
+    });
+
+function fetchStudentProfile() {
+    fetch('get_user_details.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        if (responseData.user) {
+            populateProfile(responseData.user);
+        } else {
+            console.error('User data not found:', responseData);
+        }
+    })
+    .catch(error => console.error('Error fetching profile data:', error));
+}
+
+function populateProfile(data) {
+    document.getElementById('profileUin').textContent = data.UIN || '';
+    document.getElementById('profileFirstName').textContent = data.First_Name || '';
+    document.getElementById('profileMInitial').textContent = data.M_Initial || '';
+    document.getElementById('profileLastName').textContent = data.Last_Name || '';
+    document.getElementById('profileUsername').textContent = data.Username || '';
+    document.getElementById('profileUserType').textContent = data.User_Type || '';
+    document.getElementById('profileEmail').textContent = data.Email || '';
+    document.getElementById('profileDiscordName').textContent = data.Discord_Name || '';
+
+    // Fields for College_Student table
+    document.getElementById('profileGender').textContent = data.Gender || '';
+    document.getElementById('profileHispanicLatino').textContent = data.Hispanic_Latino !== undefined ? (data.Hispanic_Latino ? 'Yes' : 'No') : '';
+    document.getElementById('profileRace').textContent = data.Race || '';
+    document.getElementById('profileUSCitizen').textContent = data.US_Citizen !== undefined ? (data.US_Citizen ? 'Yes' : 'No') : '';
+    document.getElementById('profileFirstGeneration').textContent = data.First_Generation !== undefined ? (data.First_Generation ? 'Yes' : 'No') : '';
+    document.getElementById('profileDoB').textContent = data.DoB || '';
+    document.getElementById('profileGPA').textContent = data.GPA || '';
+    document.getElementById('profileMajor').textContent = data.Major || '';
+    document.getElementById('profileMinor1').textContent = data.Minor_1 || '';
+    document.getElementById('profileMinor2').textContent = data.Minor_2 || '';
+    document.getElementById('profileExpectedGraduation').textContent = data.Expected_Graduation || '';
+    document.getElementById('profileSchool').textContent = data.School || '';
+    document.getElementById('profileClassification').textContent = data.Current_Classification || '';
+    document.getElementById('profilePhone').textContent = data.Phone || '';
+    document.getElementById('profileStudentType').textContent = data.Student_Type || '';
+}
+  </script>
+    <script>
+        document.getElementById('deactivateAccountBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to deactivate your account?')) {
+                fetch('deactivate_user.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'uin=' + encodeURIComponent(document.getElementById('profileUin').textContent)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Account deactivated. You will be logged out.');
+                    // Redirect to logout script
+                    window.location.href = 'logout.php';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deactivating the account.');
+                });
+            }
+        });
+
+
+
+    
+        document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to permanently delete your account? This action cannot be undone.')) {
+                fetch('delete_user.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'uin=' + encodeURIComponent(document.getElementById('profileUin').textContent)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Account deleted. You will be logged out.');
+                    // Redirect to logout script
+                    window.location.href = 'logout.php';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the account.');
+                });
+            }
+        });
+
+
+
+</script>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    fetchAndUpdateForm();
+});
+
+function fetchAndUpdateForm() {
+    fetch('get_user_details.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        // Check if user data is present in the response
+        if (responseData.user) {
+            var userData = responseData.user; // Extract the user data
+
+            // Populate the form with the extracted user data
+            populateStudentForm(userData);
+            document.getElementById('userDetailsPlaceholder').style.display = 'block';
+        } else {
+            // Handle the case where user data is not present
+            alert('User data not found');
+            console.error('User data not found:', responseData);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error fetching user data');
+    });
+}
+
+
+function populateStudentForm(userData) {
+    var formHtml = `
+        <form id="updateStudentForm">
+            <input type="text" name="First_Name" placeholder="First Name" value="${userData.First_Name || ''}">
+            <input type="text" name="M_Initial" placeholder="Middle Initial" value="${userData.M_Initial || ''}">
+            <input type="text" name="Last_Name" placeholder="Last Name" value="${userData.Last_Name || ''}">
+            <input type="text" name="Username" placeholder="Username" value="${userData.Username || ''}">
+            <input type="password" name="Passwords" placeholder="New Password">
+            <input type="text" name="User_Type" placeholder="User Type" value="${userData.User_Type || ''}">
+            <input type="email" name="Email" placeholder="Email" value="${userData.Email || ''}">
+            <input type="text" name="Discord_Name" placeholder="Discord Name" value="${userData.Discord_Name || ''}">
+
+            <!-- Fields for College_Student table -->
+            <input type="text" name="Gender" placeholder="Gender" value="${userData.Gender || ''}">
+            <input type="text" name="Hispanic_Latino" placeholder="Hispanic/Latino (0 or 1)" value="${userData.Hispanic_Latino || ''}">
+            <input type="text" name="Race" placeholder="Race" value="${userData.Race || ''}">
+            <input type="text" name="US_Citizen" placeholder="US Citizen (0 or 1)" value="${userData.US_Citizen || ''}">
+            <input type="text" name="First_Generation" placeholder="First Generation (0 or 1)" value="${userData.First_Generation || ''}">
+            <input type="text" name="DoB" placeholder="DOB (YYYY-MM-DD)" value="${userData.DoB || ''}">
+            <input type="text" name="GPA" placeholder="GPA" value="${userData.GPA || ''}">
+            <input type="text" name="Major" placeholder="Major" value="${userData.Major || ''}">
+            <input type="text" name="Minor_1" placeholder="Minor 1" value="${userData.Minor_1 || ''}">
+            <input type="text" name="Minor_2" placeholder="Minor 2" value="${userData.Minor_2 || ''}">
+            <input type="text" name="Expected_Graduation" placeholder="Expected Grad Year" value="${userData.Expected_Graduation || ''}">
+            <input type="text" name="School" placeholder="School" value="${userData.School || ''}">
+            <input type="text" name="Current_Classification" placeholder="Current Classification" value="${userData.Current_Classification || ''}">
+            <input type="text" name="Phone" placeholder="Phone" value="${userData.Phone || ''}">
+            <input type="text" name="Student_Type" placeholder="Student Type" value="${userData.Student_Type || ''}">
+            
+            <button type="submit">Submit</button>
+        </form>
+    `;
+
+    // Replace the existing form or div content with the new form
+    document.getElementById('userDetailsPlaceholder').innerHTML = formHtml;
+    document.getElementById('userDetailsPlaceholder').style.display = 'block';
+
+    attachFormSubmitEvent();
+}
+
+
+        
+function attachFormSubmitEvent() {
+    var updateForm = document.getElementById('updateStudentForm');
+    if (updateForm) {
+        updateForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+
+            // Send the form data to update_student_info.php
+            fetch('update_student_info.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Show success or error message
+                // Refresh the page
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating.');
+            });
+        });
+    }
+}
+    </script>
+    
+</body>
+</html>
