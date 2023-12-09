@@ -10,10 +10,13 @@ Group15Dump.sql
 index.html, admin.html, student.html, login.php, logout.php
 <br />
 
+### Admin User Authentication and Roles (Kyle Diano)<br />
+user_authentication_and_roles_admin.html, add_admin.php, deactivate_user.php, delete_user.php, get_user_details.php, get_user_types_and_roles.php, update_college_student.php, update_user.php
+<br />
 
-### Admin and Student User Authentication and Roles (Kyle Diano)<br />
-user_authentication_and_roles_admin.html, add_admin.php, user_authentication_and_roles_student.html, create_student.php, deactivate_user.php, delete_user.php, get_user_details.php, get_user_types_and_roles.php, update_college_student.php, update_student_info.php, update_user.php
-<br /> 
+###  Student User Authentication and Roles (Kyle Diano)<br />
+user_authentication_and_roles_student.html, create_student.php, deactivate_user.php, delete_user.php, get_user_details.php, update_student_info.php
+<br />
 
 ### Admin Event Management Files: (Jaden Reyes)<br />
 AdminEventMangement.php, createEvent.php, editEvent.php, retrieveAttendees.php, addAttendees.php, removeAttendees.php, accessEvent.php, deleteEvent.php <br /> 
