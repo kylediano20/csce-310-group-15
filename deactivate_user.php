@@ -1,4 +1,5 @@
 <?php
+// file coded by Kyle Diano
 $host = "localhost";
 $dbUsername = "root";
 $dbPassword = "";

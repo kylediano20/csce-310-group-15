@@ -1,4 +1,6 @@
 <?php
+
+// file coded by Kyle Diano
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";

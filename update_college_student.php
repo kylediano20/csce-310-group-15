@@ -1,4 +1,5 @@
 <?php
+// file coded by Kyle Diano
 // Assuming a POST request with form data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Database connection details
