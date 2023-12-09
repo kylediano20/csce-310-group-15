@@ -233,7 +233,7 @@ $conn->close();
     </script>
 
 <br><br>
-    <a href="student_test.html"> Back to functionalities</a> 
+    <a href="student.html"> Back to functionalities</a> 
     <br><br>
     <!-- Add a logout button or link -->
     <a href="logout.php">Log Out</a>

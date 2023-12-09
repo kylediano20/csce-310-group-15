@@ -178,7 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 
     <br><br>
-    <a href="admin_test.html"> Back to functionalities</a> 
+    <a href="admin.html"> Back to functionalities</a> 
     <br><br>
     <!-- Add a logout button or link -->
     <a href="logout.php">Log Out</a>
