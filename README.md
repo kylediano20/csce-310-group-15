@@ -31,3 +31,5 @@ student_progress_tracking.html, student_insert_certification.php, student_insert
 ```
 Emil Agbigay, Kyle Diano, Jaden Reyes, Umer Sajid
 ```
+## Video 
+https://www.youtube.com/watch?v=wdQ2Nje1emg
