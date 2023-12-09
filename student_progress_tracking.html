@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <h1>Student Dashboard</h1>
+    <h2>View Your Records</h2>
+    <form action="student_view_records.php" method="post">
+        <!-- No UIN input field needed; it will be taken from the session in the PHP script -->
+        <input type="submit" value="View My Records">
+    </form>
+    <!-- Insert Class Enrollment Form -->
+    <h2>Add Class Enrollment Record</h2>
+    <form action="student_insert_class.php" method="post">
+        <label for="class_id">Class ID:</label>
+        <input type="text" id="class_id" name="class_id" required>
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="status">
+        <label for="semester">Semester:</label>
+        <input type="text" id="semester" name="semester">
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year">
+        <input type="submit" value="Add Class Enrollment Record">
+    </form>
+    <h2>Add Internship Application Record</h2>
+    <form action="student_insert_internship.php" method="post">
+        <label for="intern_id">Internship ID:</label>
+        <input type="text" id="intern_id" name="intern_id" required>
+        
+        <label for="intern_status">Status:</label>
+        <input type="text" id="intern_status" name="status">
+        
+        <label for="intern_year">Year:</label>
+        <input type="text" id="intern_year" name="year">
+        
+        <input type="submit" value="Add Internship Application Record">
+    </form>
+    <h2>Add Certification Enrollment Record</h2>
+    <form action="student_insert_certification.php" method="post">
+        <label for="cert_id">Certification ID:</label>
+        <input type="text" id="cert_id" name="cert_id" required>
+        
+        <label for="cert_status">Status:</label>
+        <input type="text" id="cert_status" name="status">
+        
+        <label for="training_status">Training Status:</label>
+        <input type="text" id="training_status" name="training_status">
+        
+        <label for="program_num">Program Number:</label>
+        <input type="text" id="program_num" name="program_num">
+        
+        <label for="cert_semester">Semester:</label>
+        <input type="text" id="cert_semester" name="semester">
+        
+        <label for="cert_year">Year:</label>
+        <input type="text" id="cert_year" name="year">
+        
+        <input type="submit" value="Add Certification Enrollment Record">
+    </form>
+    <!-- Update Class Enrollment Form -->
+    <h2>Update Class Enrollment Record</h2>
+    <form action="student_update_class.php" method="post">
+        <label for="ce_num">Class Enrollment ID:</label>
+        <input type="text" id="ce_num" name="ce_num" required>
+        <label for="update_status">Status:</label>
+        <input type="text" id="update_status" name="status">
+        <label for="update_semester">Semester:</label>
+        <input type="text" id="update_semester" name="semester">
+        <label for="update_year">Year:</label>
+        <input type="text" id="update_year" name="year">
+        <input type="submit" value="Update Class Enrollment Record">
+    </form>
+
+    <h2>Update Internship Application Record</h2>
+    <form action="student_update_internship.php" method="post">
+        <label for="update_intern_app_id">Internship Application ID:</label>
+        <input type="text" id="update_intern_app_id" name="ia_num" required>
+        
+        <label for="update_intern_status">Status:</label>
+        <input type="text" id="update_intern_status" name="status">
+        
+        <label for="update_intern_year">Year:</label>
+        <input type="text" id="update_intern_year" name="year">
+        
+        <input type="submit" value="Update Internship Application Record">
+    </form>
+
+    <h2>Update Certification Enrollment Record</h2>
+    <form action="student_update_certification.php" method="post">
+        <label for="update_cert_enroll_id">Certification Enrollment ID:</label>
+        <input type="text" id="update_cert_enroll_id" name="certe_num" required>
+        
+        <label for="update_cert_status">Status:</label>
+        <input type="text" id="update_cert_status" name="status">
+        
+        <label for="update_training_status">Training Status:</label>
+        <input type="text" id="update_training_status" name="training_status">
+        
+        <label for="update_program_num">Program Number:</label>
+        <input type="text" id="update_program_num" name="program_num">
+        
+        <label for="update_cert_semester">Semester:</label>
+        <input type="text" id="update_cert_semester" name="semester">
+        
+        <label for="update_cert_year">Year:</label>
+        <input type="text" id="update_cert_year" name="year">
+        
+        <input type="submit" value="Update Certification Enrollment Record">
+    </form>
+
+    <!-- Delete Class Enrollment Form -->
+    <h2>Delete Class Enrollment Record</h2>
+    <form action="admin_delete_class.php" method="post">
+        <label for="delete_ce_num">Class Enrollment ID:</label>
+        <input type="text" id="delete_ce_num" name="ce_num" required>
+        <input type="submit" value="Delete Class Enrollment Record">
+    </form>
+
+    <h2>Delete Internship Application Record</h2>
+    <form action="admin_delete_internship.php" method="post">
+        <label for="delete_intern_app_id">Internship Application ID:</label>
+        <input type="text" id="delete_intern_app_id" name="ia_num" required>
+        
+        <input type="submit" value="Delete Internship Application Record">
+    </form>
+
+    <h2>Delete Certification Enrollment Record</h2>
+    <form action="admin_delete_certification.php" method="post">
+        <label for="delete_cert_enroll_id">Certification Enrollment ID:</label>
+        <input type="text" id="delete_cert_enroll_id" name="certe_num" required>
+        
+        <input type="submit" value="Delete Certification Enrollment Record">
+    </form>
+
+    <a href="logout.php">Log Out</a>
+</body>
+</html>
