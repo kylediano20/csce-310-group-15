@@ -231,5 +231,11 @@ $conn->close();
         }
         document.getElementById('viewDocumentsForm').addEventListener('submit', viewDocuments);
     </script>
+
+<br><br>
+    <a href="student_test.html"> Back to functionalities</a> 
+    <br><br>
+    <!-- Add a logout button or link -->
+    <a href="logout.php">Log Out</a>
 </body>
 </html>

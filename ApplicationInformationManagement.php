@@ -98,7 +98,7 @@ if ($conn->connect_error) {
                 Center? 
             </label>
             <input type="checkbox" id="UnCom_CertEdit" name="UnComLabel" onclick="toggleUncomEdit()">
-            <textarea id="UnComDetailsEdit" rows="5" cols="50" placeholder="Enter Details"></textarea>
+            <textarea id="UnComDetailsEdit" name="UnComDetailsEdit" rows="5" cols="50" placeholder="Enter Details"></textarea>
                 
             <br>
             <label for="ComLabel">Have you completed any
@@ -107,7 +107,7 @@ if ($conn->connect_error) {
                 Cybersecurity Center?
             </label>
             <input type="checkbox" id="Com_CertEdit" name="ComLabel" onclick="toggleComEdit()">
-            <textarea id="ComDetailsEdit" rows="5" cols="50" placeholder="Enter Details"></textarea>
+            <textarea id="ComDetailsEdit" name="ComDetailsEdit" rows="5" cols="50" placeholder="Enter Details"></textarea>
             <br>
 
             <textarea id="PurposeEdit" name="PurposeEdit" rows="10" cols="50" placeholder="Enter Purpose Statement"></textarea>
@@ -208,5 +208,11 @@ if ($conn->connect_error) {
   document.getElementById('viewApplication').addEventListener('submit', viewApplication);
 
   </script>
+
+<br><br>
+    <a href="student_test.html"> Back to functionalities</a> 
+    <br><br>
+    <!-- Add a logout button or link -->
+    <a href="logout.php">Log Out</a>
 </body>
 </html>

@@ -17,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Purpose = $_POST["PurposeEdit"];
 
     // Checkboxes
-    $hasUnComLabel = isset($_POST["UnComLabelEdit"]);
-    $hasComLabel = isset($_POST["ComLabelEdit"]);
+    $hasUnComLabel = isset($_POST["UnComLabel"]);
+    $hasComLabel = isset($_POST["ComLabel"]);
 
     // Additional details based on checkboxes
     $UnComDetails = $hasUnComLabel ? $_POST["UnComDetailsEdit"] : null;
