@@ -20,6 +20,11 @@ AdminEventMangement.php, createEvent.php, editEvent.php, retrieveAttendees.php, 
 ### Student Documentation Files: (Jaden Reyes)<br />
 StudentDocumentMangament.php, uploadDocument.php, replaceDocument.php, viewDocuments.php, deleteDocment.php <br />
 
+### Admin Program Information Management: (Emil Agbigay)<br />
+ProgectInfoManagement.php, AddProgram.php, UpdateProgram.php, DeleteProgram.php<br />
+### Student Application Information Management: (Emil Agbigay)<br />
+ApplicationInformationManagement.php, AddApplication.php, UpdateApplication.php, ViewApplication, DeleteApplication.php<br />
+
 ### Admin Program Progress Tracking Files: (Umer Sajid)<br />
 admin_progress_tracking.html, admin_delete_class.php, admin_delete_internship.php, admin_delete_certification.php, admin_insert_certification.php, admin_insert_class.php, admin_insert_internship.php, admin_select.php,
 admin_update_certification.php, admin_update_class.php, admin_update_internship.php <br />
