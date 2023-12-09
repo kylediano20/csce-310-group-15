@@ -2,6 +2,10 @@
 
 ## File Breakdown:
 
+### DATABASE<br />
+Group15Dump.sql
+<br />
+
 ### setup (Kyle Diano)<br />
 index.html, admin.html, student.html, login.php, logout.php
 <br />
