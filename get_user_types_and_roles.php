@@ -13,7 +13,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$query = "SELECT u.UIN, u.User_Type, s.Student_Type FROM Users u LEFT JOIN College_Student s ON u.UIN = s.UIN";
+$query = "SELECT * FROM UserTypeRolesView";
 $result = $conn->query($query);
 
 $userTypesAndRoles = [];
