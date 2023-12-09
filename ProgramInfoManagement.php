@@ -12,6 +12,51 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $reportName = $_POST["ProgramReportName"];
+
+    $query = "SELECT users.UIN, users.First_Name, users.M_Initial, users.Last_Name,
+                applications.Uncom_Cert, applications.Com_Cert, applications.Purpose_Statement
+                FROM users
+                JOIN college_student ON users.UIN = college_student.UIN
+                JOIN applications ON college_student.UIN = applications.UIN
+                JOIN programs ON applications.Program_Num = programs.Program_Num
+                WHERE programs.name = '$reportName';";
+
+    $Results = mysqli_query($conn, $query);
+
+    // Output the HTML content instead of redirecting
+    echo "<h2 class='h2 mt-2'> Program: {$reportName}</h2>";
+    echo "<table class='table table-striped'>
+        <thead>
+            <tr>
+                <th scope='col'>#</th>
+                <th scope='col'>Name</th>
+                <th scope='col'>Uncommon Certifications</th>
+                <th scope='col'>Common Certifications</th>
+                <th scope='col'>Purpose Statement</th>
+            </tr>
+        </thead>
+        <tbody>";
+
+    while ($Rows = mysqli_fetch_assoc($Results)) {
+        echo "
+            <tr>
+                <th scope='row'>{$Rows['UIN']}</th>
+                <td>{$Rows['First_Name']} {$Rows['M_Initial']} {$Rows['Last_Name']}</td>
+                <td>{$Rows['Uncom_Cert']}</td>
+                <td>{$Rows['Com_Cert']}</td>
+                <td>{$Rows['Purpose_Statement']}</td>
+            </tr>";
+    }
+
+    echo "</tbody>
+    </table>";
+    
+    exit();
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +112,7 @@ if ($conn->connect_error) {
     <div class="Report">
         <h3>Create Program Report:</h3>
         <div class="CreateReport">
-            <form method="POST" action="ProgramReport.php">
+            <form method="POST" id="reportForm">
                 <select name="ProgramReportName" class="form-select" aria-label="Default select example">
                     <option selected>Choose Program</option>
                     <?php
@@ -80,7 +125,7 @@ if ($conn->connect_error) {
                     }
                     ?>
                 </select>
-                <button type="submit" id="SubmitReport" onclick="">Get Program Report</button>
+                <button type="submit" id="SubmitReport">Get Program Report</button>
                 <br>
                 <div class="OutputReport">
                     
@@ -111,5 +156,28 @@ if ($conn->connect_error) {
         </form>
     </div>
 
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var form = event.target;
+            var formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector(".OutputReport").innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+
 </body>
+
+
 </html>

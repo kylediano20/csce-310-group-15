@@ -11,6 +11,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $reportName = $_POST["ProgramReportName"];
@@ -44,22 +45,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     while ($Rows = mysqli_fetch_assoc($Results)) {
         echo "
-                <tr>
-                    <th scope='row'>{$Rows['UIN']}</th>
-                    <td>{$Rows['First_Name']} {$Rows['M_Initial']} {$Rows['Last_Name']}</td>
-                    <td>{$Rows['Uncom_Cert']}</td>
-                    <td>{$Rows['Com_Cert']}</td>
-                    <td>{$Rows['Purpose_Statement']}</td>
-                </tr>";
+            <tr>
+                <th scope='row'>{$Rows['UIN']}</th>
+                <td>{$Rows['First_Name']} {$Rows['M_Initial']} {$Rows['Last_Name']}</td>
+                <td>{$Rows['Uncom_Cert']}</td>
+                <td>{$Rows['Com_Cert']}</td>
+                <td>{$Rows['Purpose_Statement']}</td>
+            </tr>";
     }
 
     echo "</tbody>
     </table>";
-
+    
+    exit();
 }
-
-$conn->close();
-header("Location: ProgramInfoManagement.php");
-exit();
-
 ?>
