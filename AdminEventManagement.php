@@ -3,8 +3,8 @@
 // Database connection details
 $host = "localhost";
 $dbUsername = "root";
-$dbPassword = "jtsr101";
-$dbname = "310_db";
+$dbPassword = "";
+$dbname = "sys";
 // Create connection
 $conn = new mysqli($host, $dbUsername, $dbPassword, $dbname);
 // Check connection
@@ -341,5 +341,12 @@ $conn->close();
         }
         document.getElementById('viewEventAttendees').addEventListener('submit', viewAttendees);
     </script>
+
+
+    <br><br>
+    <a href="admin_test.html"> Back to functionalities</a> 
+    <br><br>
+    <!-- Add a logout button or link -->
+    <a href="logout.php">Log Out</a>
 </body>
 </html>
